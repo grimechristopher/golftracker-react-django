@@ -3,8 +3,10 @@ import { Link, useHistory } from "react-router-dom"
 
 import CourseService from "../../services/CourseService";
 import HoleService from "../../services/HoleService";
+import TeeService from "../../services/TeeService";
 
 import AddHole from "./AddHole";
+import AddTee from "./AddTee";
 import UpdateCourse from "./UpdateCourse";
 import UpdateHole from "./UpdateHole";
 
@@ -86,6 +88,15 @@ const Course = (props) => {
         )
     }
 
+    const deleteTee = (id) => {
+        console.log(id);
+        TeeService.deleteTee(id)
+        .then(response => {
+            retrieveCourse(course.id);
+        }
+        )
+    }
+
     const updateCourse = (title, city, state) => {
         var data = {
             name: title,
@@ -137,9 +148,11 @@ const Course = (props) => {
                         <div>
                             <h5>{tee.color}</h5>
                             <h5>{tee.yards} Yards</h5>
+                            <button onClick={() => deleteTee(tee.id)}>Delete Tee</button>
                         </div>
                         ))}
                     </div>
+                    <AddTee />
                     <hr />
                 </div>
                 ))}
