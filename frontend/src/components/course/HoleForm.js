@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 
-const UpdateHole = (props) => {
+const HoleForm = (props) => {
 
     const [hole, setHole] = useState({
-        id: "",
         number: "",
         title: "",
         mens_par: "",
@@ -39,12 +38,18 @@ const UpdateHole = (props) => {
 
         if (isValidated) {
             setHole({
+                number: "",
                 mens_par: "",
                 womens_par: "",
             })
 
+            if (props.hole) {
+                props.addHoleProps( hole.title, hole.mens_par, hole.womens_par);
+            }
+            else {
+                props.addHoleProps(props.holesLength + 1, hole.title, hole.mens_par, hole.womens_par);
+            }
 
-            props.addHoleProps(props.holeId, props.holeNumber, hole.title, hole.mens_par, hole.womens_par);
             
 
             //alert("Valid!");
@@ -52,11 +57,19 @@ const UpdateHole = (props) => {
 
     }
 
+    useEffect(() => {
+        //retrieveCourse(props.match.params.id);
+    }, [])
+
 
     return (
         <form onSubmit={handleSubmit} className="form-container">
-            <h1>Update Hole {props.holeNumber}</h1>
-
+            {!props.hole &&
+            <h1>Add Hole {props.holesLength + 1}</h1>
+            }
+            {props.hole &&
+            <h1>Update Hole {props.hole.number}</h1>
+            }
             <input
                 type="text"
                 className="input-menspar"
@@ -82,4 +95,4 @@ const UpdateHole = (props) => {
     );
 };
 
-export default UpdateHole;
+export default HoleForm;
