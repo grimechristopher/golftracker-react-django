@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import HoleService from "../../services/HoleService";
 
 import HoleForm from "./HoleForm";
-import TeesList from "./TeesList";
 import AddTee from "./AddTee";
 
 const Hole = (props) => {
@@ -23,7 +22,7 @@ const Hole = (props) => {
     };
 
     const updateHole = (title, m_par, w_par) => {
-        console.log(props.holeId);
+        console.log(hole.id);
         var data = {
             id: hole.id,
             number: hole.number,
@@ -45,12 +44,17 @@ const Hole = (props) => {
         });
     }
 
+    const deleteTee = (id) => {
+        console.log(id);
+        //TeeService.deleteTee(id)
+        //.then(response => {
+        //    retrieveCourse(course.id);
+        //})
+    }
+
     useEffect(() => {
-        console.log("Hole Id"+props.holeId);
-        retrieveHole(props.holeId);
+        retrieveHole(props.hole.id);
     }, [])
-
-
 
     return (
         <div>
@@ -61,7 +65,16 @@ const Hole = (props) => {
             <h4>Mens Par: {hole.mens_par}</h4>
             <h4>Womens Par: {hole.womens_par}</h4>
             <HoleForm addHoleProps={updateHole} hole={hole} />
-
+            <div>
+                {hole.tees &&
+                hole.tees.map((tee, index) => (
+                <div>
+                    <h5>{tee.color}</h5>
+                    <h5>{tee.yards} Yards</h5>
+                    <button onClick={() => deleteTee(tee.id)}>Delete Tee</button>
+                </div>
+                ))}
+            </div>
             <AddTee />
             <hr />
         </div>
