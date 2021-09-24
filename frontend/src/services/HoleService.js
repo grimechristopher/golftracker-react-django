@@ -19,7 +19,7 @@ const updateHole = (id, data) => {
 };
 
 const deleteHole = id => {
-    return axios.delete(Hole_API_BASE_URL + id);
+    return axios.delete(Hole_API_BASE_URL + id + '/');
 };
 
 export default {

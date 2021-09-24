@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 
-const AddHole = (props) => {
+const UpdateHole = (props) => {
 
     const [hole, setHole] = useState({
+        id: "",
         number: "",
         title: "",
         mens_par: "",
@@ -38,13 +39,12 @@ const AddHole = (props) => {
 
         if (isValidated) {
             setHole({
-                number: "",
                 mens_par: "",
                 womens_par: "",
             })
 
 
-            props.addHoleProps(props.holesAmt + 1, hole.title, hole.mens_par, hole.womens_par);
+            props.addHoleProps(props.holeId, props.holeNumber, hole.title, hole.mens_par, hole.womens_par);
             
 
             //alert("Valid!");
@@ -55,7 +55,7 @@ const AddHole = (props) => {
 
     return (
         <form onSubmit={handleSubmit} className="form-container">
-            <h1>Add Hole {props.holesAmt + 1}</h1>
+            <h1>Update Hole {props.holeNumber}</h1>
 
             <input
                 type="text"
@@ -82,4 +82,4 @@ const AddHole = (props) => {
     );
 };
 
-export default AddHole;
+export default UpdateHole;

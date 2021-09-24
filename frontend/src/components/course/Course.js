@@ -6,6 +6,7 @@ import HoleService from "../../services/HoleService";
 
 import AddHole from "./AddHole";
 import UpdateCourse from "./UpdateCourse";
+import UpdateHole from "./UpdateHole";
 
 const Course = (props) => {
 
@@ -18,6 +19,7 @@ const Course = (props) => {
         CourseService.getCourseById(id)
             .then(response => {
                 setCourse(response.data);
+
                 //console.log(response.data);
             })
             .catch(e => {
@@ -37,12 +39,32 @@ const Course = (props) => {
         HoleService.createHole(data)
             .then(response => {
                 console.log(response.data);
-                retrieveCourse(props.match.params.id)
+                retrieveCourse(props.match.params.id);
             })
             .catch(e => {
                 console.log(e);
                 console.log(e.response.data.non_field_errors[0]);
                 alert(e.response.data.non_field_errors[0]);
+        });
+    }
+
+    const updateHole = (holeId, number, title, mens_par, womens_par) => {
+        var data = {
+            id: holeId,
+            number: number,
+            name: title,
+            course: props.match.params.id,
+            mens_par: mens_par,
+            womens_par: womens_par,
+        };
+      console.log(data);
+        HoleService.updateHole(holeId, data)
+            .then(response => {
+                console.log(response.data);
+                retrieveCourse(course.id);
+            })
+            .catch(e => {
+                console.log(e);
         });
     }
 
@@ -52,6 +74,15 @@ const Course = (props) => {
             .then(response => {
                 history.push('/courses');
             }
+        )
+    }
+
+    const deleteHole = () => {
+        console.log(course.holes[holesAmt - 1].id);
+        HoleService.deleteHole(course.holes[holesAmt - 1].id)
+        .then(response => {
+            retrieveCourse(course.id);
+        }
         )
     }
 
@@ -79,6 +110,7 @@ const Course = (props) => {
     useEffect(() => {
         if (typeof course.holes != 'undefined') {
             setHolesAmt(course.holes.length);
+            
         }
       }, [retrieveCourse]);
 
@@ -98,8 +130,8 @@ const Course = (props) => {
                     }
                     <h4>Mens Par: {hole.mens_par}</h4>
                     <h4>Womens Par: {hole.womens_par}</h4>
-                   
-                   <div>
+                    <UpdateHole addHoleProps={updateHole} holeId={hole.id} holeNumber={hole.number} />
+                    <div>
                         {hole.tees &&
                         hole.tees.map((tee, index) => (
                         <div>
@@ -111,9 +143,11 @@ const Course = (props) => {
                     <hr />
                 </div>
                 ))}
-
+                {holesAmt > 0 &&
+                <button onClick={() => deleteHole()}>Delete Last Hole</button>
+                }
                 <AddHole addHoleProps={addHole} holesAmt={holesAmt}/>
-                <button onClick={() => deleteCourse()}>Delete</button>
+                <button onClick={() => deleteCourse()}>Delete Course</button>
                 <UpdateCourse addCourseProps={updateCourse} ></UpdateCourse>
             </div>
         </div>
