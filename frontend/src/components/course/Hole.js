@@ -4,17 +4,21 @@ import HoleService from "../../services/HoleService";
 
 import HoleForm from "./HoleForm";
 import AddTee from "./AddTee";
+import TeesList from "./TeesList";
 
 const Hole = (props) => {
     
     const [hole, setHole] = useState([]);
+    const [teesAmt, setTeesAmt] = useState([]);
+
+    const handleChange = () => {}
 
     const retrieveHole = (id) => {
         HoleService.getHoleById(id)
             .then(response => {
                 setHole(response.data);
-
-                console.log(response.data);
+                //console.log("Tees " + hole.tees);
+                console.log(hole);
             })
             .catch(e => {
                 console.log(e);
@@ -58,25 +62,23 @@ const Hole = (props) => {
 
     return (
         <div>
-            <h4>{hole.number}</h4>
+            <h3>{hole.number}</h3>
             {hole.name && 
                 <h4>{props.hole.name}</h4>
             }
             <h4>Mens Par: {hole.mens_par}</h4>
             <h4>Womens Par: {hole.womens_par}</h4>
             <HoleForm addHoleProps={updateHole} hole={hole} />
-            <div>
-                {hole.tees &&
-                hole.tees.map((tee, index) => (
-                <div>
-                    <h5>{tee.color}</h5>
-                    <h5>{tee.yards} Yards</h5>
-                    <button onClick={() => deleteTee(tee.id)}>Delete Tee</button>
-                </div>
-                ))}
-            </div>
-            <AddTee />
-            <hr />
+            {hole.tees &&
+                <TeesList 
+                    teeIds={hole.tees} 
+                    handleChangeProps={handleChange} 
+                    teesLength={teesAmt}
+                    holeId={hole.id}
+                />
+            }
+
+
         </div>
     );
 };

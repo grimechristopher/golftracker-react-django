@@ -37,7 +37,7 @@ class HolesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Hole
-        fields = ('id', 'number', 'name', 'course', 'mens_par', 'womens_par')
+        fields = ('id', 'number', 'name', 'course', 'mens_par', 'womens_par', 'tees')
         validators = [UniqueTogetherValidator(
                 queryset=Hole.objects.all(), 
                 fields=['number', 'course'], 
