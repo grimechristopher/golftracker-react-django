@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom"
 import CourseService from "../../services/CourseService";
-import AddCourse from './AddCourse';
+import CourseForm from './CourseForm';
 
 import CourseListItem from "./CourseListItem";
 
@@ -52,7 +52,7 @@ const CoursesList = (props) => {
                     />
                 </Link>
                 ))}
-            <AddCourse addCourseProps={addCourse} />
+            <CourseForm addCourseProps={addCourse} />
         </div>
     );
 };

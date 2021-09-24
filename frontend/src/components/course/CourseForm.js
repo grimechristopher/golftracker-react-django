@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const UpdateCourse = (props) => {
+const CourseForm = (props) => {
 
     const [course, setCourse] = useState({
         title: "",
@@ -54,36 +54,36 @@ const UpdateCourse = (props) => {
     }
 
     return (
-        <form onSubmit={handleSubmit} >
-            <input
-                type="text"
-                className="input-name"
-                placeholder="Course Name"
-                value={course.title}
-                name="title"
-                onChange={onChange}
-            />
-            <input
-                type="text"
-                className="input-city"
-                placeholder="City"
-                value={course.city}
-                name="city"
-                onChange={onChange}
-            />
-            <input
-                type="text"
-                className="input-state"
-                placeholder="State"
-                value={course.state}
-                name="state"
-                onChange={onChange}
-            />
-            <button className="input-submit">
-                Submit
-            </button>
-        </form>
+        <form onSubmit={handleSubmit} className="form-container">
+        <input
+            type="text"
+            className="input-name"
+            placeholder="Course Name"
+            value={course.title}
+            name="title"
+            onChange={onChange}
+        />
+        <input
+            type="text"
+            className="input-city"
+            placeholder="City"
+            value={course.city}
+            name="city"
+            onChange={onChange}
+        />
+        <input
+            type="text"
+            className="input-state"
+            placeholder="State"
+            value={course.state}
+            name="state"
+            onChange={onChange}
+        />
+        <button className="input-submit">
+            Submit
+        </button>
+      </form>
     );
 };
 
-export default UpdateCourse;
+export default CourseForm;

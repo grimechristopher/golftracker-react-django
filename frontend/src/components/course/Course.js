@@ -7,7 +7,7 @@ import TeeService from "../../services/TeeService";
 
 import AddHole from "./AddHole";
 import AddTee from "./AddTee";
-import UpdateCourse from "./UpdateCourse";
+import CourseForm from "./CourseForm";
 import UpdateHole from "./UpdateHole";
 
 const Course = (props) => {
@@ -161,7 +161,7 @@ const Course = (props) => {
                 }
                 <AddHole addHoleProps={addHole} holesAmt={holesAmt}/>
                 <button onClick={() => deleteCourse()}>Delete Course</button>
-                <UpdateCourse addCourseProps={updateCourse} ></UpdateCourse>
+                <CourseForm addCourseProps={updateCourse} />
             </div>
         </div>
     );
