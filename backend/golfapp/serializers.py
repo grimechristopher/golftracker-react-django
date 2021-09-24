@@ -33,11 +33,10 @@ class TeesSerializer(serializers.ModelSerializer):
         ]
 
 class HolesSerializer(serializers.ModelSerializer):
-    #tees = TeesSerializer(many=True,)
 
     class Meta:
         model = Hole
-        fields = ('id', 'number', 'name', 'course', 'mens_par', 'womens_par')
+        fields = ('id', 'number', 'name', 'course', 'mens_par', 'womens_par','tees')
         validators = [UniqueTogetherValidator(
                 queryset=Hole.objects.all(), 
                 fields=['number', 'course'], 
@@ -45,22 +44,8 @@ class HolesSerializer(serializers.ModelSerializer):
             )
         ]
 
-class HoleDetailSerializer(serializers.ModelSerializer):
-    tees = TeesSerializer(many=True,)
-
-    class Meta:
-        model = Hole
-        fields = ('id', 'number', 'name', 'course', 'mens_par', 'womens_par', 'tees' )
-
-class TeeColorsSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = TeeColor
-        fields = ('id', 'name', 'color' )
-
 class CourseDetailSerializer(serializers.ModelSerializer):
-    holes = HoleDetailSerializer(many=True,)
-    tee_colors = TeeColorsSerializer(many=True,)
+    #tee_colors = TeeColorsSerializer(many=True,)
 
     class Meta:
         model = Course
