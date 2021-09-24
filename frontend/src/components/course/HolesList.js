@@ -42,8 +42,8 @@ const HolesList = (props) => {
         <div>
             {props.holes &&
             props.holes.map((hole, index) => (
-            <Hole key={hole.id}
-                hole={hole}
+            <Hole key={hole}
+                holeId={hole}
                 handleChangeProps={props.handleChangeProps}
             />
             ))}

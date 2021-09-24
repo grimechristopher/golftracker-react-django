@@ -85,11 +85,11 @@ const Course = (props) => {
                 <h3>{course.city}, {course.state}</h3>
                 
                 <HolesList 
-                    holes={course.holes} 
+                    holesList={course.holes} //sent a list of ids
                     handleChangeProps={handleChange} 
                     holesLength={holesAmt}
-                    courseId={course.id
-                }/>
+                    courseId={course.id}
+                />
                 
                 <button onClick={() => deleteCourse()}>Delete Course</button>
                 <CourseForm addCourseProps={updateCourse} />
