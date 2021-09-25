@@ -6,7 +6,7 @@ const getAllTeeColors = () => {
     return axios.get(TeeColor_API_BASE_URL);
 };
 
-const getTeeColorsById = id => {
+const getTeeColorById = id => {
     return axios.get(TeeColor_API_BASE_URL + id + '/');
 };
 
@@ -24,7 +24,7 @@ const deleteTeeColor = id => {
 
 export default {
     getAllTeeColors,
-    getTeeColorsById,
+    getTeeColorById,
     createTeeColor,
     createTeeColor,
     updateTeeColor,

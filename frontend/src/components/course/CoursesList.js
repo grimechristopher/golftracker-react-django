@@ -20,11 +20,12 @@ const CoursesList = (props) => {
             });
     };
 
-    const addCourse = (title, city, state) => {
+    const addCourse = (title, city, state, colors) => {
         var data = {
             name: title,
             city: city,
             state: state,
+            tee_colors: colors
         };
       
         CourseService.createCourse(data)

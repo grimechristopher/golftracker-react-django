@@ -17,7 +17,7 @@ const TeeForm = (props) => {
     //const options = [,];
 
     const onChange = e => {
-        console.log(e.value);
+        console.log(e.target.value);
         setTee({
           ...tee,
           [e.target.name]: e.target.value,
@@ -26,6 +26,7 @@ const TeeForm = (props) => {
     
     const retrieveTeeColors = () => {
         //setColorOptions([]);
+        let container = [];
         TeeColorService.getAllTeeColors()
         .then(response => {
             response.data.forEach(element => {
@@ -34,9 +35,10 @@ const TeeForm = (props) => {
                 obj["label"] = element.name;
                 console.log(obj);
                 //options.push(obj);
-                colorOptions.push(obj);
+                container.push(obj);
                 //options.push({value: element.color, label: element.})
             });
+            setColorOptions(container);
             console.log(response.data);
             //setCourse(response.data);
     
@@ -51,33 +53,48 @@ const TeeForm = (props) => {
         e.preventDefault()
         let val = true;
         //console.log(props.teeIds);
-        if (props.teeIds.length > 0) {
-            props.teeIds.forEach(ele => {
-                console.log(ele);
-                let colorId = 0;
-                TeeService.getTeeById(ele)
-                .then(response => {
-                    //setTee(response.data);
-                    colorId = response.data.tee_color.id;
-                    //console.log(response.data);
-                    console.log("Tee Color " + tee.tee_color);
-                    console.log("color  id " + colorId);
-                    if (colorId == tee.tee_color) {
-                        setIsValid(false);
-                        alert("There is already a tee with this color");
-                    }
-                    console.log("yards " + tee.yards);
-                    if (isNaN(tee.yards) || tee.yards <= 0 || tee.yards >= 1000) {
-                        alert("Yards must be greater than 0 and less than 1000.");
-                        setIsValid(false);
-                    }
-    
-                })
-                .catch(e => {
-                    console.log(e);
+        if (props.teeIds) {
+            if (props.teeIds.length > 0) {
+                props.teeIds.forEach(ele => {
+                    console.log(ele);
+                    let colorId = 0;
+                    TeeService.getTeeById(ele)
+                    .then(response => {
+                        //setTee(response.data);
+                        colorId = response.data.tee_color.id;
+                        //console.log(response.data);
+                        console.log("Tee Color " + tee.tee_color);
+                        console.log("color  id " + colorId);
+                        if (colorId == tee.tee_color) {
+                            setIsValid(false);
+                            alert("There is already a tee with this color");
+                        }
+                        console.log("yards " + tee.yards);
+                        if (isNaN(tee.yards) || tee.yards <= 0 || tee.yards >= 1000) {
+                            alert("Yards must be greater than 0 and less than 1000.");
+                            setIsValid(false);
+                        }
+        
+                    })
+                    .catch(e => {
+                        console.log(e);
+                    });
+        
                 });
-    
-            });
+            }
+            else {
+                if (isNaN(tee.yards) || tee.yards <= 0 || tee.yards >= 1000) {
+                    alert("Yards must be greater than 0 and less than 1000.");
+                    setIsValid(false);
+                    val = false; // State isnt updating before if valid is being checked
+                }
+            }
+
+            if (isValid && val) {
+                //alert("Valid");
+                props.addTeeProps( tee.tee_color, tee.yards);
+            }
+
         }
         else {
             if (isNaN(tee.yards) || tee.yards <= 0 || tee.yards >= 1000) {
@@ -85,12 +102,16 @@ const TeeForm = (props) => {
                 setIsValid(false);
                 val = false; // State isnt updating before if valid is being checked
             }
+
+            if (isValid && val) {
+                //alert("Valid");
+                props.addTeeProps( props.teeColor, tee.yards);
+            }
         }
 
+
         //props.addTeeProps( tee.color, 500);
-        if (isValid && val) {
-            alert("Valid");
-        }
+
     }
     
     useEffect(() => {
@@ -99,14 +120,19 @@ const TeeForm = (props) => {
 
     return (
         <form onSubmit={handleSubmit} className="form-container">
+
+            {props.teeIds &&
             <select 
-                onChange={onChange}
-                name="tee_color"
-                value={tee.tee_color}
+            onChange={onChange}
+            name="tee_color"
+            value={tee.tee_color}
             >
-                <option value="1">White</option>
-                <option value="2">Red</option>
+                {colorOptions &&
+                colorOptions.map((opt, index) => (
+                    <option value={opt['value']}>{opt['label']}</option>
+                ))}
             </select>
+            }
             <input
                 type="text"
                 className="input-number"

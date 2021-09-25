@@ -50,14 +50,6 @@ const Hole = (props) => {
         });
     }
 
-    const deleteTee = (id) => {
-        console.log(id);
-        //TeeService.deleteTee(id)
-        //.then(response => {
-        //    retrieveCourse(course.id);
-        //})
-    }
-
     useEffect(() => {
         retrieveHole(props.hole.id);
     }, [])

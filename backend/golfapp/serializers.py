@@ -19,7 +19,7 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
-        fields = ('url', 'id', 'name', 'city', 'state',)
+        fields = ('url', 'id', 'name', 'city', 'state', 'tee_colors')
 
 class TeeColorsSerializer(serializers.ModelSerializer):
 
@@ -28,14 +28,14 @@ class TeeColorsSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'color' )
 
 class TeesSerializer(serializers.ModelSerializer):
-    tee_color = TeeColorsSerializer(many=False,)
+    #tee_color = TeeColorsSerializer(many=False,)
 
     class Meta:
         model = Tee
         fields = ('id', 'tee_color', 'yards', 'hole')
         validators = [UniqueTogetherValidator(
                 queryset=Tee.objects.all(), 
-                fields=['color', 'hole'], 
+                fields=['tee_color', 'hole'], 
                 message="This hole already has a tee with this color.",
             )
         ]
@@ -67,8 +67,3 @@ class CourseDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = ('id', 'name', 'city', 'state','tee_colors', 'holes' )
-
-class TeeColorsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = TeeColor
-        fields = ('id', 'name', 'color')

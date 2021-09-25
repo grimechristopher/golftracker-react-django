@@ -11,6 +11,7 @@ const Course = (props) => {
 
     const [course, setCourse] = useState([]);
     const [holesAmt, setHolesAmt] = useState([]);
+    
 
     let history = useHistory();
 
@@ -33,10 +34,6 @@ const Course = (props) => {
         console.log("Change Handled" + id);
     }
 
-
-
-
-
     const deleteCourse = () => {
         console.log(course.id);
         CourseService.deleteCourse(course.id)
@@ -47,14 +44,15 @@ const Course = (props) => {
     }
 
 
-
-
-    const updateCourse = (title, city, state) => {
+    const updateCourse = (title, city, state, colors) => {
         var data = {
             name: title,
             city: city,
             state: state,
+            tee_colors: colors
         };
+
+        console.log(data);
       
         CourseService.updateCourse(course.id, data)
             .then(response => {
@@ -66,6 +64,7 @@ const Course = (props) => {
         });
     }
 
+    
     useEffect(() => {
         retrieveCourse(props.match.params.id);
     }, [])
@@ -91,8 +90,14 @@ const Course = (props) => {
                     courseId={course.id}
                 />
                 
+                <h4>TeeColors: </h4>
+                {course.tee_colors &&
+                course.tee_colors.map((c, index) => (
+                    <h5>{c.name}</h5>
+                ))}
+                
                 <button onClick={() => deleteCourse()}>Delete Course</button>
-                <CourseForm addCourseProps={updateCourse} />
+                <CourseForm addCourseProps={updateCourse} course={course} />
             </div>
         </div>
     );

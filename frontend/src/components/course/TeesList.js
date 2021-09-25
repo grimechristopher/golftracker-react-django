@@ -18,7 +18,7 @@ const TeesList = (props) => {
             .then(response => {
                 console.log(response.data);
                 //retrieveCourse(props.match.params.id);
-                //props.handleChangeProps();
+                props.handleChangeProps();
             })
             .catch(e => {
                 console.log(e);
@@ -32,7 +32,9 @@ const TeesList = (props) => {
             {props.teeIds &&
                 props.teeIds.map((id, index) => (
                     <Tee
+                        key={id}
                         teeId={id}
+                        handleChangeProps={props.handleChangeProps}
                     />
                 ))}
             <TeeForm addTeeProps={addTee} teeIds={props.teeIds} />

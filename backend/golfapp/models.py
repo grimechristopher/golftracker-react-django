@@ -72,7 +72,7 @@ class Hole(models.Model):
 # Tees have a different distance(yards) to the hole from the tee box 
 class Tee(models.Model):
     tee_color = models.ForeignKey('TeeColor', on_delete=CASCADE, null=False, blank=False, related_name='tees') 
-    color = models.CharField(choices=COLOR_CHOICES, blank=True, null=True, max_length=255)
+    #color = models.CharField(choices=COLOR_CHOICES, blank=True, null=True, max_length=255)
     yards = models.IntegerField(validators=[MaxValueValidator(1000), MinValueValidator(1)])
     hole = models.ForeignKey('Hole', on_delete=CASCADE, null=True, blank=True, related_name='tees')
 
