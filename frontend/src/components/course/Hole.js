@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import HoleService from "../../services/HoleService";
 
 import HoleForm from "./HoleForm";
-import AddTee from "./AddTee";
 import TeesList from "./TeesList";
 
 const Hole = (props) => {
@@ -11,7 +10,9 @@ const Hole = (props) => {
     const [hole, setHole] = useState([]);
     const [teesAmt, setTeesAmt] = useState([]);
 
-    const handleChange = () => {}
+    const handleChange = () => {
+        retrieveHole(hole.id);
+    }
 
     const retrieveHole = (id) => {
         HoleService.getHoleById(id)
@@ -34,6 +35,7 @@ const Hole = (props) => {
             course: hole.course,
             mens_par: m_par,
             womens_par: w_par,
+            tees: hole.tees
         };
       console.log(data);
         HoleService.updateHole(hole.id, data)

@@ -44,9 +44,11 @@ const HoleForm = (props) => {
             })
 
             if (props.hole) {
+                console.log("Did notFound Props");
                 props.addHoleProps( hole.title, hole.mens_par, hole.womens_par);
             }
             else {
+                console.log("Found Props");
                 props.addHoleProps(props.holesLength + 1, hole.title, hole.mens_par, hole.womens_par);
             }
 

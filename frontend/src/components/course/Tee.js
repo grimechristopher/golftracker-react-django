@@ -28,7 +28,9 @@ const Tee = (props) => {
 
     return (
         <div>
-            <h5>{tee.color}</h5>
+            {tee.tee_color &&
+            <h5>{tee.tee_color.name}</h5> 
+            }
             <h5>{tee.yards} Yards</h5>
             <button onClick={() => deleteTee(tee.id)}>Delete Tee</button>
     </div>

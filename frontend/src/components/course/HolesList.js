@@ -14,6 +14,7 @@ const HolesList = (props) => {
             course: props.courseId,
             mens_par: mens_par,
             womens_par: womens_par,
+            tees: []
         };
       
         HoleService.createHole(data)
@@ -24,10 +25,11 @@ const HolesList = (props) => {
             })
             .catch(e => {
                 console.log(e);
-                console.log(e.response.data.non_field_errors[0]);
+                console.log(e.response.data);
                 alert(e.response.data.non_field_errors[0]);
         });
     }
+
     const deleteHole = (id) => {
         console.log(props.holes[props.holesLength - 1].id);
         HoleService.deleteHole(props.holes[props.holesLength - 1].id)
