@@ -4,9 +4,11 @@ import HoleService from "../../services/HoleService";
 
 import HoleForm from "./HoleForm";
 import TeesList from "./TeesList";
+import TeeForm from "./TeeForm";
 
 const Hole = (props) => {
-    
+
+    const [editing, setEditing] = useState(false);
     const [hole, setHole] = useState([]);
     const [teesAmt, setTeesAmt] = useState([]);
 
@@ -50,28 +52,52 @@ const Hole = (props) => {
         });
     }
 
+    const handleEditing = () => {
+        setEditing(!editing)
+    }
+
+    let viewMode = {}
+    let editMode = {}
+    
+    if (editing) {
+        viewMode.display = "none"
+    } else {
+    editMode.display = "none"
+    }
+
     useEffect(() => {
         retrieveHole(props.hole.id);
     }, [])
 
     return (
-        <div>
+        <div class="hole-container">
             <h3>{hole.number}</h3>
             {hole.name && 
                 <h4>{props.hole.name}</h4>
             }
-            <h4>Mens Par: {hole.mens_par}</h4>
-            <h4>Womens Par: {hole.womens_par}</h4>
-            <HoleForm addHoleProps={updateHole} hole={hole} />
             {hole.tees &&
                 <TeesList 
                     teeIds={hole.tees} 
                     handleChangeProps={handleChange} 
                     teesLength={teesAmt}
                     holeId={hole.id}
+                    enabledColors={props.enabledColors}
                 />
             }
+            { !editing && 
+            <>
+                <h4 onClick={handleEditing}>{hole.mens_par}</h4>
+                <h4 onClick={handleEditing}>{hole.womens_par}</h4>
+            </>
+            }
+            { editing &&
+            <>
 
+                <HoleForm addHoleProps={updateHole} onSubmit={handleEditing} hole={hole} />
+            </>
+            }
+
+            <TeeForm addTeeProps={handleChange} teeIds={hole.tees} />
 
         </div>
     );

@@ -109,6 +109,7 @@ const TeeForm = (props) => {
             }
         }
 
+        //props.onSubmit();
 
         //props.addTeeProps( tee.color, 500);
 
@@ -141,9 +142,7 @@ const TeeForm = (props) => {
                 name="yards"
                 onChange={onChange}
             />
-        <button className="input-submit">
-            Submit
-        </button>
+            <button type="submit">Submit Tee</button>
         </form>
     );
 };

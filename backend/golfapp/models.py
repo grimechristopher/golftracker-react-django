@@ -32,6 +32,14 @@ class GolferUser(AbstractUser):
 # # # # # # # # # # # # # # #
 #   Course related models   #
 # # # # # # # # # # # # # # #
+# Tee color model is planned to replace the hardcoded COLOR_CHOICES
+class TeeColor(models.Model):
+    name = models.CharField(blank=False, null=True, max_length=255)
+    color = ColorField(default='#000000', blank=False, null=False)
+
+    def __str__(self):
+        return self.name + " (" + self.color + ")"
+
 
 # Course model 
 class Course(models.Model):
@@ -83,12 +91,5 @@ class Tee(models.Model):
     #    unique_together = (('color','hole'),) # only have one of each color on the hole
 
     def __str__(self):
-        return str(self.color) + " Tee on " + str(self.hole)
+        return str(self.tee_color.name) + " Tee on " + str(self.hole)
 
-# Tee color model is planned to replace the hardcoded COLOR_CHOICES
-class TeeColor(models.Model):
-    name = models.CharField(blank=False, null=True, max_length=255)
-    color = ColorField(default='#000000', blank=False, null=False)
-
-    def __str__(self):
-        return self.name + " (" + self.color + ")"

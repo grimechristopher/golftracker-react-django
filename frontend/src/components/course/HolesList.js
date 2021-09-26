@@ -1,5 +1,7 @@
 import React from 'react';
 
+import styles from "./HolesList.module.css";
+
 import HoleService from '../../services/HoleService';
 
 import Hole from './Hole';
@@ -41,12 +43,24 @@ const HolesList = (props) => {
 
 
     return (
-        <div>
+        <div className={styles.holescontainer} >
+            <div>
+                <h3>Hole</h3>
+                {props.enabledColors &&
+                props.enabledColors.map((c, i) => (
+                    <h4>Yards</h4>
+                ))
+                }
+                <h5>Mens</h5>
+                <h5>Womens</h5>
+
+            </div>
             {props.holes &&
             props.holes.map((hole, index) => (
             <Hole key={hole.id}
                 hole={hole}
                 handleChangeProps={props.handleChangeProps}
+                enabledColors={props.enabledColors}
             />
             ))}
             {props.holesLength > 0 &&

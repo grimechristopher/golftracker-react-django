@@ -8,7 +8,7 @@ const CourseForm = (props) => {
         title: "",
         city: "",
         state: "",
-        tee_colors: ""
+        tee_colors: []
     })
 
     const[colorOptions, setColorOptions] = useState([]);
@@ -49,11 +49,13 @@ const CourseForm = (props) => {
 
     const onMultiSelectChange = e => {
       let options = Array.from(e.target.selectedOptions, option => option.value);
-      console.log(options);
+      //console.log("sel option" + e.target.selectedOptions);
+      console.log( Array.from(e.target.selectedOptions, option => option.value));
+      //let options = e.target.selectedOptions;
       //console.log("MultiSelect Cghange");
       setCourse({
         ...course,
-        [e.target.name]: options,
+        [e.target.name]: Array.from(e.target.selectedOptions, option => option.value),
       })
     }
 
@@ -108,7 +110,7 @@ const CourseForm = (props) => {
           title: props.course.name,
           city: props.course.city,
           state: props.course.state,
-          tee_colors: [props.course.tee_colors]
+          tee_colors: []
         })
         console.log("teeColors:");
         console.log(props.course.tee_colors);
@@ -151,7 +153,7 @@ const CourseForm = (props) => {
             onChange={onChange}
         />
 
-        <select name="tee_colors" multiple={true} onChange={onMultiSelectChange} value={defaultColors}>
+        <select name="tee_colors" multiple={true} onChange={onMultiSelectChange} >
           {colorOptions &&
               colorOptions.map((opt, index) => (
                   <option value={opt['value']}>{opt['label']}</option>

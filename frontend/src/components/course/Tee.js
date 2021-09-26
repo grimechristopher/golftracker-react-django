@@ -6,8 +6,10 @@ import TeeForm from "./TeeForm";
 
 const Tee = (props) => {
 
+    const [editing, setEditing] = useState(false);
     const [tee, setTee] = useState([]);
     const [teeColor, setTeeColor] = useState([]);
+    const [containsColor, setContainsColor] = useState(true);
 
     const retrieveTee = (id) => {
         TeeService.getTeeById(id)
@@ -20,12 +22,23 @@ const Tee = (props) => {
                     setTeeColor(response.data);
                     //retrieveTee(tee.id);
                     console.log(response.data);
+
+                    if (props.checkColor) {
+                        console.log("Enabled Colors ");
+                        console.log(props.checkColor);
+                        if (props.checkColor == response.data.id) {
+                            console.log("Found Color");
+                            //setContainsColor(true);
+                        }
+                        
+                    }
                 })
                 .catch(e => {
                     console.log(e);
                 });
                 
                 console.log(response.data);
+
             })
             .catch(e => {
                 console.log(e);
@@ -65,19 +78,44 @@ const Tee = (props) => {
         })
     }
 
+    const handleEditing = () => {
+        setEditing(!editing)
+    }
+
+
+    let viewMode = {}
+    let editMode = {}
+    
+    if (editing) {
+        viewMode.display = "none"
+    } else {
+    editMode.display = "none"
+    }
+
     useEffect(() => {
         retrieveTee(props.teeId);
     }, [])
 
     return (
-        <div>
-            {tee.tee_color &&
-            <h5>{teeColor.name}</h5> 
-            }
-            <h5>{tee.yards} Yards</h5>
-            <TeeForm addTeeProps={updateTee} teeColor={tee.tee_color} />
-            <button onClick={() => deleteTee(tee.id)}>Delete Tee</button>
-    </div>
+        <>
+        { containsColor &&
+        <>
+            <div onClick={handleEditing} style={viewMode}>
+                {tee.tee_color &&
+                <></>
+                }
+                <h5>{tee.yards}</h5>
+            </div>
+            <div style={editMode}>
+                <TeeForm addTeeProps={updateTee} onSubmit={handleEditing} teeColor={tee.tee_color} />
+            </div>
+        </>
+        }
+        { !containsColor && 
+        <div><h5>X</h5></div>
+        }
+
+        </>
     );
 };
 

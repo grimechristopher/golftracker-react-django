@@ -56,7 +56,7 @@ const HoleForm = (props) => {
 
             //alert("Valid!");
         }
-
+        props.onSubmit();
     }
 
     useEffect(() => {
@@ -66,12 +66,6 @@ const HoleForm = (props) => {
 
     return (
         <form onSubmit={handleSubmit} className="form-container">
-            {!props.hole &&
-            <h1>Add Hole {props.holesLength + 1}</h1>
-            }
-            {props.hole &&
-            <h1>Update Hole {props.hole.number}</h1>
-            }
             <input
                 type="text"
                 className="input-menspar"
@@ -79,7 +73,7 @@ const HoleForm = (props) => {
                 value={hole.mens_par}
                 name="mens_par"
                 onChange={onChange}
-            />
+            /> <br />
             <input
                 type="text"
                 className="input-womenspar"
