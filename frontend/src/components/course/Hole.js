@@ -6,7 +6,6 @@ import ApiService from "../../services/ApiService";
 
 import HoleForm from "./HoleForm";
 import TeesList from "./TeesList";
-import TeeForm from "./TeeForm";
 
 const Hole = (props) => {
 

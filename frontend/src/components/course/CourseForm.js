@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import TeeColorService from "../../services/TeeColorService";
+import ApiService from "../../services/ApiService";
 
 const CourseForm = (props) => {
 
@@ -15,7 +15,7 @@ const CourseForm = (props) => {
 
     const retrieveTeeColors = () => {
       let container = [];
-      TeeColorService.getAllTeeColors()
+      ApiService.getAll('teecolors')
       .then(response => {
           response.data.forEach(element => {
               let obj = {};

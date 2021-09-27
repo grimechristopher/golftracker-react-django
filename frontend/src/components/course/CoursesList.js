@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom"
 import ApiService from "../../services/ApiService";
-import CourseService from "../../services/CourseService";
 import CourseForm from './CourseForm';
 
 import CourseListItem from "./CourseListItem";

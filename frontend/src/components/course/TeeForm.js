@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import styles from "./Course.module.css";
 
-import TeeColorService from '../../services/TeeColorService';
+import ApiService from "../../services/ApiService";
 
 const TeeForm = (props) => {
 
@@ -23,7 +23,7 @@ const TeeForm = (props) => {
     
     const retrieveTeeColors = () => {
         let container = [];
-        TeeColorService.getAllTeeColors()
+        ApiService.getAll("teecolors")
         .then(response => {
             response.data.forEach(element => {
                 let obj = {};
@@ -101,7 +101,8 @@ const TeeForm = (props) => {
         if (props.tee) {
             setTee({
                 ...tee,
-                yards: props.yards,
+                tee_color: props.tee.tee_color.id,
+                yards: props.tee.yards,
             })
         }  
         retrieveTeeColors();
