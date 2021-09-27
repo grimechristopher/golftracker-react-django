@@ -1,7 +1,9 @@
 from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator
 
-from .models import GolferUser, Course, Hole, Tee, TeeColor
+from rest_auth.registration.serializers import RegisterSerializer
+
+from .models import COLOR_CHOICES, GolferUser, Course, Hole, Tee, TeeColor
 
 ## Serializers for each model. Will allow me to Create, Update, Delete
 class GolferUserSerializer(serializers.HyperlinkedModelSerializer):
@@ -70,3 +72,15 @@ class CourseDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = ('id', 'name', 'city', 'state','tee_colors', 'holes' )
+
+class RegistrationSerializer(RegisterSerializer):
+
+    GENDER_CHOICES = ( ('MALE', 'Male'),
+                     ('FEMALE', 'Female'), )
+
+    gender = serializers.CharField(required=False)
+
+    def custom_signup(self, request, user):
+        user.gender = self.validated_data.get('gender', '')
+
+        user.save(update_fields=['gender'])

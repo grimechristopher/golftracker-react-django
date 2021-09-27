@@ -165,3 +165,10 @@ REST_FRAMEWORK = {
         ],
 }
 
+REST_AUTH_REGISTER_SERIALIZERS = {
+    'REGISTER_SERIALIZER': 'golfapp.serializers.RegistrationSerializer',
+}
+
+REST_AUTH_SERIALIZERS = {
+    'USER_DETAILS_SERIALIZER': 'golfapp.serializers.GolferUserSerializer',
+}
