@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
 from .forms import GolferUserCreationForm, GolferUserChangeForm
-from .models import GolferUser, Course, Hole, Tee, TeeColor
+from .models import GolferUser, Course, Hole, Tee, TeeColor, Round
 
 class GolferUserAdmin(UserAdmin):
     add_form = GolferUserCreationForm
@@ -21,3 +21,4 @@ admin.site.register(Hole)
 admin.site.register(Tee)
 admin.site.register(TeeColor)
 admin.site.register(Course)
+admin.site.register(Round)

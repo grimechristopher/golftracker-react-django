@@ -6,6 +6,7 @@ from rest_auth.registration.serializers import RegisterSerializer
 from .models import COLOR_CHOICES, GolferUser, Course, Hole, Tee, TeeColor
 
 ## Serializers for each model. Will allow me to Create, Update, Delete
+
 class GolferUserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = GolferUser

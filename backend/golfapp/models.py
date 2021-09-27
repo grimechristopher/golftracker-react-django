@@ -3,7 +3,8 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db.models.deletion import CASCADE # To set minimum and maximum integer valuses # I no longer remember what this is...
 from colorfield.fields import ColorField
-
+from django.conf import settings
+from datetime import datetime, time, date
 
 # Hardcoded list of possible Tee colors to choose from. Currently used to set the options for the tee select fields
 # Planned to change the way the select list chooses tee colors
@@ -89,3 +90,13 @@ class Tee(models.Model):
     def __str__(self):
         return str(self.tee_color.name) + " Tee on " + str(self.hole)
 
+class Round(models.Model):
+    course = models.ForeignKey('Course', on_delete=models.SET_NULL, null=True)
+    name = models.CharField(max_length=255, null=True, blank=True, verbose_name='Title this round (optional)')
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
+    created_on = models.DateTimeField(default=datetime.now)
+    completed_on = models.DateTimeField(null=True, blank=True)
+    tee_color = models.ForeignKey('TeeColor', on_delete=models.SET_NULL, null=True, blank=False, related_name='teecolor')
+
+    class Meta:
+        ordering = ['-created_on']
