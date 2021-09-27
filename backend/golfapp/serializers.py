@@ -10,7 +10,7 @@ from .models import COLOR_CHOICES, GolferUser, Course, Hole, Tee, TeeColor
 class GolferUserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = GolferUser
-        fields = ['url', 'username', 'email', 'gender']
+        fields = ['id', 'url', 'username', 'email', 'gender']
 
 class CourseSerializer(serializers.ModelSerializer):
     class Meta:
