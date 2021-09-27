@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 
+import styles from "./Course.module.css"
+
 const HoleForm = (props) => {
 
     const [hole, setHole] = useState({
@@ -21,7 +23,6 @@ const HoleForm = (props) => {
 
         let isValidated = true;
 
-  
         if (isFinite(hole.mens_par) && hole.mens_par > 0 && hole.womens_par < 10) { // is number greater than 0 ?
 
         } else {
@@ -43,46 +44,57 @@ const HoleForm = (props) => {
                 womens_par: "",
             })
 
-            if (props.hole) {
+            if (!props.hole) {
                 console.log("Did notFound Props");
-                props.addHoleProps( hole.title, hole.mens_par, hole.womens_par);
+                props.addHoleProps(props.course.holes.length + 1, hole.title, hole.mens_par, hole.womens_par);
             }
             else {
                 console.log("Found Props");
-                props.addHoleProps(props.holesLength + 1, hole.title, hole.mens_par, hole.womens_par);
+                props.addHoleProps( hole.title, hole.mens_par, hole.womens_par);
+                props.handleSubmit();
             }
-
-            
-
-            //alert("Valid!");
         }
-        props.onSubmit();
+
+        props.handleChangeProps();
+        
     }
 
     useEffect(() => {
-        //retrieveCourse(props.match.params.id);
-    }, [])
+
+        if (props.hole) {
+          setHole({
+            ...hole,
+            number: props.hole.number,
+            title: props.hole.title,
+            mens_par: props.hole.mens_par,
+            womens_par: props.hole.womens_par,
+          })
+        }
+      }, [props.hole])
 
 
     return (
         <form onSubmit={handleSubmit} className="form-container">
-            <input
-                type="text"
-                className="input-menspar"
-                placeholder="Men's Par"
-                value={hole.mens_par}
-                name="mens_par"
-                onChange={onChange}
-            /> <br />
-            <input
-                type="text"
-                className="input-womenspar"
-                placeholder="Women's Par"
-                value={hole.womens_par}
-                name="womens_par"
-                onChange={onChange}
-            />
-
+            <div className={styles.holecell}>
+                <input
+                    type="text"
+                    className={styles.holeinput}
+                    placeholder="Men's Par"
+                    value={hole.mens_par}
+                    name="mens_par"
+                    onChange={onChange}
+                />
+            </div>
+            <div className={styles.holecell}>
+                <input
+                    type="text"
+                    className={styles.holeinput}
+                    placeholder="Women's Par"
+                    value={hole.womens_par}
+                    name="womens_par"
+                    onChange={onChange}
+                />
+            </div>
 
         <button className="input-submit">
             Submit

@@ -11,11 +11,9 @@ const CourseForm = (props) => {
         tee_colors: []
     })
 
-    const[colorOptions, setColorOptions] = useState([]);
-    const[defaultColors, setDefaultColors] = useState([]);
+    const[teeColors, setTeeColors] = useState([]);
 
     const retrieveTeeColors = () => {
-      //setColorOptions([]);
       let container = [];
       TeeColorService.getAllTeeColors()
       .then(response => {
@@ -23,19 +21,12 @@ const CourseForm = (props) => {
               let obj = {};
               obj["value"] = element.id;
               obj["label"] = element.name;
-              console.log(obj);
-              //options.push(obj);
               container.push(obj);
-              //options.push({value: element.color, label: element.})
           });
-          setColorOptions(container);
-          console.log(response.data);
-          //setCourse(response.data);
-  
-          //console.log(response.data);
+          setTeeColors(container);
       })
       .catch(e => {
-          console.log(e);
+          console.log(e.message);
       });
   }
 
@@ -49,13 +40,9 @@ const CourseForm = (props) => {
 
     const onMultiSelectChange = e => {
       let options = Array.from(e.target.selectedOptions, option => option.value);
-      //console.log("sel option" + e.target.selectedOptions);
-      console.log( Array.from(e.target.selectedOptions, option => option.value));
-      //let options = e.target.selectedOptions;
-      //console.log("MultiSelect Cghange");
       setCourse({
         ...course,
-        [e.target.name]: Array.from(e.target.selectedOptions, option => option.value),
+        [e.target.name]: options,
       })
     }
 
@@ -79,7 +66,6 @@ const CourseForm = (props) => {
             })
         } else {
             alert("City cannot be blank.");
-            isValidated = false;
         }
 
         if (course.state.trim()) {
@@ -93,15 +79,10 @@ const CourseForm = (props) => {
 
         if (isValidated) {
             props.addCourseProps(course.title, course.city, course.state, course.tee_colors);
+            props.onSubmit()
         }
 
     }
-
-    useEffect(() => {
-      retrieveTeeColors();
-
-    }, [])
-
     useEffect(() => {
 
       if (props.course) {
@@ -110,60 +91,65 @@ const CourseForm = (props) => {
           title: props.course.name,
           city: props.course.city,
           state: props.course.state,
-          tee_colors: []
+          tee_colors: props.defaultColors
         })
-        console.log("teeColors:");
-        console.log(props.course.tee_colors);
-        if (props.course.tee_colors) {
-          let arr = [];
-          props.course.tee_colors.forEach(ele => {
-            arr.push(ele.id);
-          })
-          console.log(arr);
-          setDefaultColors(arr);
-        }
-
       }
-    }, [props.course])
+
+      retrieveTeeColors();
+
+    }, [props.course, props.defaultColors])
 
     return (
         <form onSubmit={handleSubmit} className="form-container">
-        <input
-            type="text"
-            className="input-name"
-            placeholder="Course Name"
-            value={course.title}
-            name="title"
-            onChange={onChange}
-        />
-        <input
-            type="text"
-            className="input-city"
-            placeholder="City"
-            value={course.city}
-            name="city"
-            onChange={onChange}
-        />
-        <input
-            type="text"
-            className="input-state"
-            placeholder="State"
-            value={course.state}
-            name="state"
-            onChange={onChange}
-        />
-
-        <select name="tee_colors" multiple={true} onChange={onMultiSelectChange} >
-          {colorOptions &&
-              colorOptions.map((opt, index) => (
-                  <option value={opt['value']}>{opt['label']}</option>
-              ))}
-        </select>
-
-        <button className="input-submit">
-            Submit
-        </button>
-      </form>
+            <div>
+                <input
+                    type="text"
+                    className="input-name"
+                    placeholder="Course Name"
+                    value={course.title}
+                    name="title"
+                    onChange={onChange}
+                />
+            </div>
+            <div>
+                <input
+                    type="text"
+                    className="input-text"
+                    placeholder="City"
+                    value={course.city}
+                    name="city"
+                    onChange={onChange}
+                />
+                <input
+                    type="text"
+                    className="input-text"
+                    placeholder="State"
+                    value={course.state}
+                    name="state"
+                    onChange={onChange}
+                />
+            </div>
+            <div>
+                <select 
+                    name="tee_colors"
+                    multiple={true} 
+                    value={course.tee_colors}
+                    onChange={onMultiSelectChange} 
+                >
+                  {teeColors &&
+                      teeColors.map((option) => (
+                          <option value={option.value} >
+                              {option.label}
+                          </option>
+                  ))}
+                </select>
+            </div>
+            <div>
+                <button className="input-submit">
+                    Save Course
+                </button>
+            </div>
+        </form>
     );
 };
 

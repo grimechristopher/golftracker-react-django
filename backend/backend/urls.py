@@ -21,7 +21,6 @@ from golfapp import views
 
 router = routers.DefaultRouter()
 router.register(r'users', views.GolferUserViewSet)
-router.register(r'groups', views.GroupViewSet)
 router.register(r'courses', views.CourseViewSet)
 router.register(r'holes', views.HoleViewSet)
 router.register(r'tees', views.TeeViewSet)

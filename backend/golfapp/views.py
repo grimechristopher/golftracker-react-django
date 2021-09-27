@@ -3,7 +3,7 @@ from rest_framework import viewsets, permissions
 from django.contrib.auth.models import Group
 
 from .models import GolferUser, Course, Hole, Tee, TeeColor
-from .serializers import GolferUserSerializer, GroupSerializer, CourseSerializer, CourseDetailSerializer, HolesSerializer, TeesSerializer, TeeColorsSerializer
+from .serializers import GolferUserSerializer, CourseSerializer, CourseDetailSerializer, HolesSerializer, TeesSerializer, TeeColorsSerializer
 
 # Create your views here.
 class GolferUserViewSet(viewsets.ModelViewSet):
@@ -12,22 +12,11 @@ class GolferUserViewSet(viewsets.ModelViewSet):
     queryset = GolferUser.objects.all()
     permission_classes = [permissions.IsAuthenticated]
 
-class GroupViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows groups to be viewed or edited.
-    """
-    queryset = Group.objects.all()
-    serializer_class = GroupSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
 class CourseViewSet(viewsets.ModelViewSet):
     serializer_class = CourseSerializer
     queryset = Course.objects.all()
-    #permission_classes = [IsAuthenticatedOrReadOnly]
-#    permission_classes = (AllowAny,)
-    #authentication_classes = [TokenAuthentication,]
-#    permission_classes = [IsAuthenticated]
 
+    # Get course details if a specific course is requested /courses/id
     def get_serializer_class(self):
         if self.action == 'retrieve':
             return CourseDetailSerializer

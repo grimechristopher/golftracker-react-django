@@ -1,87 +1,34 @@
 import React, { useState, useEffect } from "react";
 
-import TeeService from "../../services/TeeService";
-import TeeColorService from "../../services/TeeColorService";
+import styles from "./Course.module.css";
+
+import ApiService from "../../services/ApiService";
 import TeeForm from "./TeeForm";
 
 const Tee = (props) => {
 
     const [editing, setEditing] = useState(false);
-    const [tee, setTee] = useState([]);
-    const [teeColor, setTeeColor] = useState([]);
-    const [containsColor, setContainsColor] = useState(true);
-
-    const retrieveTee = (id) => {
-        TeeService.getTeeById(id)
-            .then(response => {
-                setTee(response.data);
-
-
-                TeeColorService.getTeeColorById(response.data.tee_color)
-                .then(response => {
-                    setTeeColor(response.data);
-                    //retrieveTee(tee.id);
-                    console.log(response.data);
-
-                    if (props.checkColor) {
-                        console.log("Enabled Colors ");
-                        console.log(props.checkColor);
-                        if (props.checkColor == response.data.id) {
-                            console.log("Found Color");
-                            //setContainsColor(true);
-                        }
-                        
-                    }
-                })
-                .catch(e => {
-                    console.log(e);
-                });
-                
-                console.log(response.data);
-
-            })
-            .catch(e => {
-                console.log(e);
-            });
-
-        //console.log(course.holes);
-    };
 
     const updateTee = (color, yards) => {
-        //console.log(hole.id);
         var data = {
-            id: tee.id,
-            tee_color: color,
+            id: props.tee.id,
+            tee_color: props.tee.tee_color.id,
             yards: yards,
-            hole: tee.hole
+            hole: props.tee.hole 
         };
-      console.log(data);
-        TeeService.updateTee(tee.id, data)
+      
+        ApiService.update('tees', props.tee.id, data)
             .then(response => {
-                console.log(response.data);
-                //props.handleChangeProps();
-                retrieveTee(tee.id);
-                //retrieveHole(hole.id);
-                //props.handleChangeProps();
+                props.handleChangeProps();
             })
             .catch(e => {
                 console.log(e);
         });
     }
 
-    const deleteTee = (id) => {
-        console.log(id);
-        TeeService.deleteTee(id)
-        .then(response => {
-            //retrieveTee(tee.id);
-            props.handleChangeProps();
-        })
-    }
-
     const handleEditing = () => {
         setEditing(!editing)
     }
-
 
     let viewMode = {}
     let editMode = {}
@@ -89,32 +36,25 @@ const Tee = (props) => {
     if (editing) {
         viewMode.display = "none"
     } else {
-    editMode.display = "none"
+        editMode.display = "none"
     }
-
-    useEffect(() => {
-        retrieveTee(props.teeId);
-    }, [])
 
     return (
         <>
-        { containsColor &&
-        <>
-            <div onClick={handleEditing} style={viewMode}>
-                {tee.tee_color &&
-                <></>
-                }
-                <h5>{tee.yards}</h5>
+        <div style={viewMode} onClick={handleEditing} > 
+            <div className={styles.holecell} >
+                <h5>{props.tee.yards}</h5>
             </div>
-            <div style={editMode}>
-                <TeeForm addTeeProps={updateTee} onSubmit={handleEditing} teeColor={tee.tee_color} />
+        </div>
+        <div style={editMode} >
+            <div className={styles.holecell} >
+                <TeeForm 
+                    tee={props.tee} 
+                    addTeeProps={updateTee}
+                    handleSubmit={handleEditing}
+                />
             </div>
-        </>
-        }
-        { !containsColor && 
-        <div><h5>X</h5></div>
-        }
-
+        </div>
         </>
     );
 };

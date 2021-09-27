@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import Select from 'react-select'
+
+import styles from "./Course.module.css";
 
 import TeeColorService from '../../services/TeeColorService';
-import TeeService from "../../services/TeeService";
 
 const TeeForm = (props) => {
 
@@ -14,10 +14,7 @@ const TeeForm = (props) => {
     const[colorOptions, setColorOptions] = useState([]);
     const[isValid, setIsValid] = useState(true);
 
-    //const options = [,];
-
     const onChange = e => {
-        console.log(e.target.value);
         setTee({
           ...tee,
           [e.target.name]: e.target.value,
@@ -25,7 +22,6 @@ const TeeForm = (props) => {
     }
     
     const retrieveTeeColors = () => {
-        //setColorOptions([]);
         let container = [];
         TeeColorService.getAllTeeColors()
         .then(response => {
@@ -33,52 +29,29 @@ const TeeForm = (props) => {
                 let obj = {};
                 obj["value"] = element.id;
                 obj["label"] = element.name;
-                console.log(obj);
-                //options.push(obj);
                 container.push(obj);
-                //options.push({value: element.color, label: element.})
             });
             setColorOptions(container);
-            console.log(response.data);
-            //setCourse(response.data);
-    
-            //console.log(response.data);
         })
         .catch(e => {
-            console.log(e);
+            console.log(e.response.data);
         });
     }
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        let val = true;
-        //console.log(props.teeIds);
-        if (props.teeIds) {
-            if (props.teeIds.length > 0) {
-                props.teeIds.forEach(ele => {
-                    console.log(ele);
-                    let colorId = 0;
-                    TeeService.getTeeById(ele)
-                    .then(response => {
-                        //setTee(response.data);
-                        colorId = response.data.tee_color.id;
-                        //console.log(response.data);
-                        console.log("Tee Color " + tee.tee_color);
-                        console.log("color  id " + colorId);
-                        if (colorId == tee.tee_color) {
-                            setIsValid(false);
-                            alert("There is already a tee with this color");
-                        }
-                        console.log("yards " + tee.yards);
-                        if (isNaN(tee.yards) || tee.yards <= 0 || tee.yards >= 1000) {
-                            alert("Yards must be greater than 0 and less than 1000.");
-                            setIsValid(false);
-                        }
-        
-                    })
-                    .catch(e => {
-                        console.log(e);
-                    });
+
+        if (props.tees) {
+            if (props.tees.length > 0) {
+                props.tees.forEach(tee_prop => {
+                    if (tee_prop.tee_color.id == tee.tee_color) { 
+                        setIsValid(false);
+                        alert("There is already a tee with this color");
+                    }
+                    if (isNaN(tee.yards) || tee.yards <= 0 || tee.yards >= 1000) {
+                        alert("Yards must be greater than 0 and less than 1000.");
+                        setIsValid(false);
+                    }
         
                 });
             }
@@ -86,43 +59,62 @@ const TeeForm = (props) => {
                 if (isNaN(tee.yards) || tee.yards <= 0 || tee.yards >= 1000) {
                     alert("Yards must be greater than 0 and less than 1000.");
                     setIsValid(false);
-                    val = false; // State isnt updating before if valid is being checked
                 }
             }
 
-            if (isValid && val) {
-                //alert("Valid");
-                props.addTeeProps( tee.tee_color, tee.yards);
-            }
+
 
         }
         else {
             if (isNaN(tee.yards) || tee.yards <= 0 || tee.yards >= 1000) {
                 alert("Yards must be greater than 0 and less than 1000.");
                 setIsValid(false);
-                val = false; // State isnt updating before if valid is being checked
             }
+            
+            //props.handleSubmit();
 
-            if (isValid && val) {
-                //alert("Valid");
-                props.addTeeProps( props.teeColor, tee.yards);
-            }
         }
 
-        //props.onSubmit();
+        if (isValid) {
+            props.addTeeProps(tee.tee_color, tee.yards);
+            setTee({
+                ...tee,
+                yards: ""
+            })
+        }
 
-        //props.addTeeProps( tee.color, 500);
+        props.handleSubmit();
 
     }
     
     useEffect(() => {
-        retrieveTeeColors()
+        
     }, [])
+
+    useEffect(() => {
+        if (props.color) {
+            setTee({
+                ...tee,
+                tee_color: props.color,
+            })
+        }  
+        if (props.tee) {
+            setTee({
+                ...tee,
+                yards: props.yards,
+            })
+        }  
+        retrieveTeeColors();
+  
+      }, [props.tee])
 
     return (
         <form onSubmit={handleSubmit} className="form-container">
 
-            {props.teeIds &&
+        {/* Spent so much time getting this to work and now I dont even need it....
+            I'm keeping it here. 
+
+            {props.tees &&
             <select 
             onChange={onChange}
             name="tee_color"
@@ -134,10 +126,13 @@ const TeeForm = (props) => {
                 ))}
             </select>
             }
+
+        */}
             <input
                 type="text"
-                className="input-number"
-                placeholder=""
+                //className="input-number"
+                className={styles.holeinput}
+                placeholder="yards"
                 value={tee.yards}
                 name="yards"
                 onChange={onChange}

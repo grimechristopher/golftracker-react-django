@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = "http://localhost:8000/api/courses/";
+const API_BASE_URL = "http://localhost:8000/api/";
 
 const getAll = (model) => {
     return axios.get(API_BASE_URL + model + '/');

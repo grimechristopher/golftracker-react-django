@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 
-import HoleService from "../../services/HoleService";
+import styles from "./Course.module.css";
+
+import ApiService from "../../services/ApiService";
 
 import HoleForm from "./HoleForm";
 import TeesList from "./TeesList";
@@ -9,46 +11,35 @@ import TeeForm from "./TeeForm";
 const Hole = (props) => {
 
     const [editing, setEditing] = useState(false);
-    const [hole, setHole] = useState([]);
-    const [teesAmt, setTeesAmt] = useState([]);
+    const [adding, setAdding] = useState(false);
 
-    const handleChange = () => {
-        retrieveHole(hole.id);
-    }
 
-    const retrieveHole = (id) => {
-        HoleService.getHoleById(id)
-            .then(response => {
-                setHole(response.data);
-                //console.log("Tees " + hole.tees);
-                console.log(hole);
-            })
-            .catch(e => {
-                console.log(e);
-            });
-    };
 
     const updateHole = (title, m_par, w_par) => {
-        console.log(hole.id);
+
+        let arr = [];
+        if (props.hole.tees) {
+            props.hole.tees.map(tee => (
+                arr.push(tee.id)
+            ))
+        }
+
         var data = {
-            id: hole.id,
-            number: hole.number,
+            id: props.hole.id,
+            number: props.hole.number,
             name: title,
-            course: hole.course,
+            course: props.course.id,
             mens_par: m_par,
             womens_par: w_par,
-            tees: hole.tees
+            tees: arr
         };
       console.log(data);
-        HoleService.updateHole(hole.id, data)
+        ApiService.update('holes', props.hole.id, data)
             .then(response => {
-                console.log(response.data);
-                props.handleChangeProps(hole.course)
-                //retrieveCourse(course.id);
-                retrieveHole(hole.id);
+                props.handleChangeProps()
             })
             .catch(e => {
-                console.log(e);
+                console.log(e.response.data);
         });
     }
 
@@ -62,42 +53,51 @@ const Hole = (props) => {
     if (editing) {
         viewMode.display = "none"
     } else {
-    editMode.display = "none"
+        editMode.display = "none"
     }
 
-    useEffect(() => {
-        retrieveHole(props.hole.id);
-    }, [])
-
     return (
-        <div class="hole-container">
-            <h3>{hole.number}</h3>
-            {hole.name && 
+        <div className={styles.holecontainer}>
+            <div className={styles.holecell}>
+                <h3>{props.hole.number}</h3>
+            </div>
+            {props.hole.name && 
                 <h4>{props.hole.name}</h4>
             }
-            {hole.tees &&
+            {props.hole.tees &&
                 <TeesList 
-                    teeIds={hole.tees} 
-                    handleChangeProps={handleChange} 
-                    teesLength={teesAmt}
-                    holeId={hole.id}
-                    enabledColors={props.enabledColors}
+                    course={props.course}
+                    hole={props.hole}
+                    tees={props.hole.tees}
+                    handleChangeProps={props.handleChangeProps} 
                 />
             }
+            
             { !editing && 
             <>
-                <h4 onClick={handleEditing}>{hole.mens_par}</h4>
-                <h4 onClick={handleEditing}>{hole.womens_par}</h4>
+                <div className={styles.holecell}>
+                    <h4 onClick={handleEditing}>{props.hole.mens_par}</h4>
+                </div>
+                <div className={styles.holecell}>
+                    <h4 onClick={handleEditing}>{props.hole.womens_par}</h4>
+                </div>
             </>
             }
             { editing &&
             <>
-
-                <HoleForm addHoleProps={updateHole} onSubmit={handleEditing} hole={hole} />
+            <HoleForm 
+                course={props.course} 
+                hole={props.hole} 
+                addHoleProps={updateHole} 
+                handleChangeProps={props.handleChangeProps} 
+                handleSubmit={handleEditing}
+            />
             </>
             }
 
-            <TeeForm addTeeProps={handleChange} teeIds={hole.tees} />
+
+
+            
 
         </div>
     );

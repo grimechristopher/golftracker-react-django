@@ -46,7 +46,7 @@ class Course(models.Model):
     name = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
     state = models.CharField(max_length=255)
-    tee_colors = models.ManyToManyField('TeeColor', related_name='courses') # Each hole must be attached to a course.
+    tee_colors = models.ManyToManyField('TeeColor', blank=True ,null=True, related_name='courses') # Each hole must be attached to a course.
     # Planned to add picture field 
     # Planned to add user comments field
 
@@ -88,7 +88,7 @@ class Tee(models.Model):
 
 
     #class Meta:
-    #    unique_together = (('color','hole'),) # only have one of each color on the hole
+    #    unique_together = (('tee_color','hole'),) # only have one of each color on the hole
 
     def __str__(self):
         return str(self.tee_color.name) + " Tee on " + str(self.hole)

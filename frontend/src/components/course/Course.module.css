@@ -1,0 +1,18 @@
+.holescontainer {
+    display: flex;
+}
+.holecontainer {
+    min-width: 4em;
+    max-width: 4em;
+    text-align: center;
+}
+
+.holecell {
+    border: 1px solid black;
+    min-height: 4em;
+    max-height: 4em;
+}
+
+.holeinput {
+    max-width: 4em;
+}

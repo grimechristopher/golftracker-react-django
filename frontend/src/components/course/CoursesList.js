@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom"
+import ApiService from "../../services/ApiService";
 import CourseService from "../../services/CourseService";
 import CourseForm from './CourseForm';
 
@@ -10,10 +11,9 @@ const CoursesList = (props) => {
     const [courses, setCourses] = useState([]);
 
     const retrieveCourses = () => {
-        CourseService.getAllCourses()
+        ApiService.getAll('courses')
             .then(response => {
                 setCourses(response.data);
-                console.log(response.data);
             })
             .catch(e => {
                 console.log(e);
@@ -28,13 +28,12 @@ const CoursesList = (props) => {
             tee_colors: colors
         };
       
-        CourseService.createCourse(data)
+        ApiService.create('courses' , data)
             .then(response => {
-                console.log(response.data);
-                setCourses([...courses, response.data])
+                retrieveCourses();
             })
             .catch(e => {
-                console.log(e);
+                console.log(e.response.data);
         });
     }
 
@@ -53,7 +52,9 @@ const CoursesList = (props) => {
                     />
                 </Link>
                 ))}
-            <CourseForm addCourseProps={addCourse} />
+            <CourseForm 
+                addCourseProps={addCourse}
+            />
         </div>
     );
 };

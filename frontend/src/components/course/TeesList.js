@@ -1,92 +1,77 @@
 import React, { useState, useEffect } from "react";
 
-import TeeService from '../../services/TeeService';
+import ApiService from "../../services/ApiService";
+
+import styles from "./Course.module.css";
 
 import Tee from './Tee';
-import TeeForm from './TeeForm';
+import TeeForm from "./TeeForm";
 
 const TeesList = (props) => {
 
-    const [tees, setTees] = useState([]);
+    // Go through each enabled tee color. find the matching tee and display 
+    // If no tee matches then display blank space
+
+    const [adding, setAdding] = useState(false);
 
     const addTee = (color, yards) => {
         var data = {
             tee_color: color,
             yards: yards,
-            hole: props.holeId
+            hole: props.hole.id
         };
       
-        TeeService.createTee(data)
+        ApiService.create('tees', data)
             .then(response => {
-                console.log(response.data);
-                //retrieveCourse(props.match.params.id);
                 props.handleChangeProps();
             })
             .catch(e => {
-                console.log(e);
-                console.log(e.response.data.non_field_errors[0]);
-                alert(e.response.data.non_field_errors[0]);
+                console.log(e.response.data);
         });
     }
 
-    const retrieveTees = () => {
-
-
-            props.teeIds.forEach(element => {
-                TeeService.getTeeById(element)
-                .then(response => {
-                    //setTee(response.data);
-                    let arr = [...tees];
-                    arr.push(response.data)
-                    
-                    console.log(response.data);
-                    console.log("My Tee Objects!");
-                    console.log(arr);    
-    
-                })
-                .catch(e => {
-                    console.log(e);
-                });       
-     
-            });
-
-    
-            //console.log(course.holes);
-    
+    const handleAdding = () => {
+        setAdding(!adding)
     }
 
-
     useEffect(() => {
-        retrieveTees();
-    }, [])
-
-    // I only care about displaying Tees that are the same as the enabled colors...
-    // if there is a color without a tee then I need to make a blank div 
-    // I will go through each color and see if my tee ids match then <Tee>
-    // if my color isnt found in the tees then <div>
-
-    // Make an array of ids if color isnt found put a 0 in the array. check ids for 
-
+    }, [props.course])  
 
 
     return (
         <div>
-
-                {props.teeIds &&
-                    props.teeIds.map((id, index) => (
+            {props.course.tee_colors &&
+            props.course.tee_colors.map((tee_color, index) => (
+                props.tees.filter(tee => tee.tee_color.id === tee_color.id).length > 0 ?
+                    props.tees.filter(tee => tee.tee_color.id === tee_color.id).map(tee => (
                         <Tee
-                            key={id}
-                            teeId={id}
+                            key={tee.id}
+                            course={props.course}
+                            tee={tee}
                             handleChangeProps={props.handleChangeProps}
-                            checkColor={0}
                         />
-                    ))}
-
-            
-
-
-
-        </div>
+                    ))
+                    :
+                    <div className={styles.holecell}>
+                        {adding &&
+                        <div >
+                            <TeeForm 
+                                tees={props.tees} 
+                                addTeeProps={addTee}
+                                handleSubmit={handleAdding}
+                                color={tee_color.id}
+                            />
+                        </div>
+                        }
+                        { !adding && 
+                            <div onClick={handleAdding}>
+                                <h3>Add Tee</h3>
+                            </div>
+                        }
+                                </div>
+                                
+                        ))}
+                    </div>
     );
 };
 

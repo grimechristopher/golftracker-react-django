@@ -1,72 +1,78 @@
 import React from 'react';
 
-import styles from "./HolesList.module.css";
+import styles from "./Course.module.css";
 
-import HoleService from '../../services/HoleService';
+import ApiService from '../../services/ApiService';
 
 import Hole from './Hole';
 import HoleForm from './HoleForm';
 
 const HolesList = (props) => {
 
-    const addHole = (number, title, mens_par, womens_par) => {
+    const addHole = (number, title, mens_par, womens_par ) => {
         var data = {
             number: number,
             name: title,
-            course: props.courseId,
+            course: props.course.id,
             mens_par: mens_par,
             womens_par: womens_par,
             tees: []
         };
       
-        HoleService.createHole(data)
+        ApiService.create('holes', data)
             .then(response => {
-                console.log(response.data);
-                //retrieveCourse(props.match.params.id);
-                props.handleChangeProps(props.courseId);
+                props.handleChangeProps();
             })
             .catch(e => {
-                console.log(e);
                 console.log(e.response.data);
-                alert(e.response.data.non_field_errors[0]);
         });
     }
 
-    const deleteHole = (id) => {
-        console.log(props.holes[props.holesLength - 1].id);
-        HoleService.deleteHole(props.holes[props.holesLength - 1].id)
+    const deleteHole = () => {
+        ApiService.remove('holes', props.holes[props.holes.length - 1].id)
         .then(response => {
-            //retrieveCourse(course.id);
-            props.handleChangeProps(props.holes[0].course);
+            props.handleChangeProps();
         })
     }
 
-
     return (
         <div className={styles.holescontainer} >
-            <div>
-                <h3>Hole</h3>
-                {props.enabledColors &&
-                props.enabledColors.map((c, i) => (
-                    <h4>Yards</h4>
+            <div className={styles.holecontainer} >
+                <div className={styles.holecell} >
+                    <h3>Hole</h3>
+                </div>
+                {props.course.tee_colors &&
+                props.course.tee_colors.map((c, i) => (
+                    <div className={styles.holecell} >
+                        <h4>&nbsp;</h4>
+                    </div>
                 ))
                 }
-                <h5>Mens</h5>
-                <h5>Womens</h5>
-
+                <div className={styles.holecell}>
+                    <h4>Mens</h4>
+                </div>
+                <div className={styles.holecell}>
+                    <h4>Ladies</h4>
+                </div>
             </div>
             {props.holes &&
             props.holes.map((hole, index) => (
-            <Hole key={hole.id}
+            <Hole 
+                key={hole.id}
                 hole={hole}
+                course={props.course}
                 handleChangeProps={props.handleChangeProps}
                 enabledColors={props.enabledColors}
             />
             ))}
-            {props.holesLength > 0 &&
-            <button onClick={() => deleteHole(props.holesLength - 1)}>Delete Last Hole</button>
+            {props.holes &&
+            <>
+            {props.holes.length > 0 &&
+            <button onClick={() => deleteHole()}>Delete Last Hole</button>
             }
-            <HoleForm addHoleProps={addHole} holesLength={props.holesLength}/>
+            <HoleForm addHoleProps={addHole} course={props.course} handleChangeProps={props.handleChangeProps} holesLength={props.holesLength}/>
+            </>
+            }
         </div>
     );
 };
