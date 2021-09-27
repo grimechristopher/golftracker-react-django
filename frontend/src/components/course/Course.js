@@ -40,7 +40,7 @@ const Course = (props) => {
     }
 
     const deleteCourse = () => {
-        ApiService.remove('courses', course.id)
+        ApiService.remove('courses', course.id, localStorage.getItem('token'))
             .then(response => {
                 history.push('/courses');
             })
@@ -58,7 +58,7 @@ const Course = (props) => {
             tee_colors: colors
         };
       
-        ApiService.update('courses', course.id, data)
+        ApiService.update('courses', course.id, data, localStorage.getItem('token'))
             .then(response => {
                 retrieveCourse(course.id);
             })
@@ -68,7 +68,9 @@ const Course = (props) => {
     }
 
     const handleEditing = () => {
-        setEditing(!editing)
+        if (localStorage.getItem('token') != null) {
+            setEditing(!editing)
+        }
     }
 
     let viewMode = {}
@@ -100,10 +102,10 @@ const Course = (props) => {
                         onSubmit={handleEditing}
                     />
                 </div>
-                { editing &&
+                { editing && localStorage.getItem('token') != null &&
                 <button onClick={() => deleteCourse()}>Delete Course</button>
                 }
-                { !editing &&
+                { !editing && localStorage.getItem('token') != null &&
                 <button onClick={handleEditing}>Edit info</button>
                 }
 
@@ -112,6 +114,11 @@ const Course = (props) => {
                     holes={course.holes} 
                     handleChangeProps={handleChange} 
                 />
+                {localStorage.getItem('token') === null &&
+                <div>
+                    <p>Login to edit course details</p>
+                </div>
+                }
                 
                 
                 <hr />

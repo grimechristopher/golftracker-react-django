@@ -13,6 +13,8 @@ class GolferUserViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
 class CourseViewSet(viewsets.ModelViewSet):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
     serializer_class = CourseSerializer
     queryset = Course.objects.all()
 
@@ -23,13 +25,19 @@ class CourseViewSet(viewsets.ModelViewSet):
         return CourseSerializer
 
 class HoleViewSet(viewsets.ModelViewSet):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
     serializer_class = HolesSerializer
     queryset = Hole.objects.all()
 
 class TeeViewSet(viewsets.ModelViewSet):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
     serializer_class = TeesSerializer
     queryset = Tee.objects.all()
 
 class TeeColorViewSet(viewsets.ModelViewSet):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
     serializer_class = TeeColorsSerializer
     queryset = TeeColor.objects.all()

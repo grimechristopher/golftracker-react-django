@@ -9,6 +9,11 @@ class GolferUserAdmin(UserAdmin):
     form = GolferUserChangeForm
     model = GolferUser
     list_display = ['email', 'username', 'gender', ]
+    fieldsets = UserAdmin.fieldsets + (
+        (None, {
+            'fields': ('gender',),
+        }),
+    )
 
 # Register your models here.
 admin.site.register(GolferUser, GolferUserAdmin)

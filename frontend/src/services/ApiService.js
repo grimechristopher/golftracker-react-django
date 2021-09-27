@@ -10,16 +10,31 @@ const get = (model, id) => {
     return axios.get(API_BASE_URL + model + '/' + id + '/');
 };
 
-const create = (model, data) => {
-    return axios.post(API_BASE_URL + model + '/', data);
+const create = (model, data, token) => {
+    return axios.post(API_BASE_URL + model + '/', data, {
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Token ${token}`
+        }
+    })
 };
 
-const update = (model, id, data) => {
-    return axios.put(API_BASE_URL + model + '/' + id + '/', data);
+const update = (model, id, data, token) => {
+    return axios.put(API_BASE_URL + model + '/' + id + '/', data, {
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Token ${token}`
+        }
+    })
 };
 
-const remove = (model, id) => {
-    return axios.delete(API_BASE_URL + model + '/' + id +'/');
+const remove = (model, id, token) => {
+    return axios.delete(API_BASE_URL + model + '/' + id +'/', {
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Token ${token}`
+        }
+    })
 };
 
 export default {

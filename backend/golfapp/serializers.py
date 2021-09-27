@@ -1,15 +1,13 @@
 from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator
 
-from django.contrib.auth.models import Group
-
 from .models import GolferUser, Course, Hole, Tee, TeeColor
 
 ## Serializers for each model. Will allow me to Create, Update, Delete
 class GolferUserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = GolferUser
-        fields = ['url', 'username', 'email', 'gender', 'groups']
+        fields = ['url', 'username', 'email', 'gender']
 
 class CourseSerializer(serializers.ModelSerializer):
     class Meta:

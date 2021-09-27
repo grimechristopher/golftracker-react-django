@@ -19,7 +19,7 @@ const HolesList = (props) => {
             tees: []
         };
       
-        ApiService.create('holes', data)
+        ApiService.create('holes', data, localStorage.getItem('token'))
             .then(response => {
                 props.handleChangeProps();
             })
@@ -29,7 +29,7 @@ const HolesList = (props) => {
     }
 
     const deleteHole = () => {
-        ApiService.remove('holes', props.holes[props.holes.length - 1].id)
+        ApiService.remove('holes', props.holes[props.holes.length - 1].id, localStorage.getItem('token'))
         .then(response => {
             props.handleChangeProps();
         })
@@ -67,10 +67,12 @@ const HolesList = (props) => {
             ))}
             {props.holes &&
             <>
-            {props.holes.length > 0 &&
+            {props.holes.length > 0 && localStorage.getItem('token') != null &&
             <button onClick={() => deleteHole()}>Delete Last Hole</button>
             }
+            { localStorage.getItem('token') != null &&
             <HoleForm addHoleProps={addHole} course={props.course} handleChangeProps={props.handleChangeProps} holesLength={props.holesLength}/>
+            }
             </>
             }
         </div>

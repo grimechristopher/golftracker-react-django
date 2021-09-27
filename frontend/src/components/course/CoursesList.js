@@ -27,13 +27,16 @@ const CoursesList = (props) => {
             tee_colors: colors
         };
       
-        ApiService.create('courses' , data)
+        ApiService.create('courses' , data, localStorage.getItem('token'))
             .then(response => {
                 retrieveCourses();
             })
             .catch(e => {
                 console.log(e.response.data);
         });
+    }
+    const onSubmit = () => {
+        retrieveCourses();
     }
 
     useEffect(() => {
@@ -51,9 +54,13 @@ const CoursesList = (props) => {
                     />
                 </Link>
                 ))}
-            <CourseForm 
+                { localStorage.getItem('token') != null &&
+                <CourseForm 
                 addCourseProps={addCourse}
-            />
+                onSubmit={onSubmit}
+                />
+                }
+
         </div>
     );
 };

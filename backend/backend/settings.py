@@ -42,6 +42,14 @@ INSTALLED_APPS = [
     'corsheaders',
     'colorfield',
 
+    'rest_framework.authtoken', 
+    'rest_auth', 
+    'django.contrib.sites', 
+    'allauth', 
+    'allauth.account',
+    'allauth.socialaccount',
+    'rest_auth.registration',
+
     'golfapp', 
 ]
 
@@ -134,3 +142,26 @@ CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:3000',
 )
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+AUTHENTICATION_BACKENDS = (
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+)
+
+SITE_ID = 1 
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = True
+ACCOUNT_SESSION_REMEMBER = True
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_UNIQUE_EMAIL = True
+
+REST_FRAMEWORK = {    
+    'DATETIME_FORMAT': "%m/%d/%Y %I:%M%P",
+    'DEFAULT_AUTHENTICATION_CLASSES':  [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.BasicAuthentication'
+        ],
+}
+

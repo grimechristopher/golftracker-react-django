@@ -1,30 +1,44 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom"
 
-const links = [
-    {
-      id: 1,
-      path: "/",
-      text: "Rounds",
-    },
-    {
-      id: 2,
-      path: "/courses",
-      text: "Courses",
-    },
-]
-
 const Navbar = () => {
+
+    const [loggedIn, setLoggedIn] = useState(false);
+
+    useEffect(() => {
+        if (localStorage.getItem('token') !== null) {
+            setLoggedIn(true);
+        }
+
+    }, []);
+
     return (
         <nav>
             <ul>
-                {links.map(link => {
-                return (          
-                    <li key={link.id}>
-                    <NavLink to={link.path} activeClassName="active-link" exact >{link.text}</NavLink>
-                    </li>
-                )
-                })}
+                <li key={1}>
+                    <NavLink to="/" activeClassName="active-link" exact >Rounds</NavLink>
+                </li>
+                <li key={2}>
+                    <NavLink to="/courses" activeClassName="active-link" exact >Courses</NavLink>
+                </li>
+                { loggedIn === true &&
+                <>
+                <li key={3}>
+                    <NavLink to="/logout" activeClassName="active-link" exact >Logout</NavLink>
+                </li>
+                </>
+                }
+                { loggedIn != true &&
+                <>
+                <li key={3}>
+                    <NavLink to="/login" activeClassName="active-link" exact >Login</NavLink>
+                </li>
+                <li key={4}>
+                    <NavLink to="/signup" activeClassName="active-link" exact >Signup</NavLink>
+                </li>
+                </>
+                }
+
             </ul>
         </nav>
     );

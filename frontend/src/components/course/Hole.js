@@ -33,7 +33,7 @@ const Hole = (props) => {
             tees: arr
         };
       console.log(data);
-        ApiService.update('holes', props.hole.id, data)
+        ApiService.update('holes', props.hole.id, data, localStorage.getItem('token'))
             .then(response => {
                 props.handleChangeProps()
             })
@@ -43,7 +43,9 @@ const Hole = (props) => {
     }
 
     const handleEditing = () => {
-        setEditing(!editing)
+        if (localStorage.getItem('token') != null) {
+            setEditing(!editing)
+        }
     }
 
     let viewMode = {}

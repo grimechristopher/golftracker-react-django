@@ -21,7 +21,7 @@ const TeesList = (props) => {
             hole: props.hole.id
         };
       
-        ApiService.create('tees', data)
+        ApiService.create('tees', data, localStorage.getItem('token'), localStorage.getItem('token'))
             .then(response => {
                 props.handleChangeProps();
             })
@@ -31,7 +31,9 @@ const TeesList = (props) => {
     }
 
     const handleAdding = () => {
-        setAdding(!adding)
+        if (localStorage.getItem('token') != null) {
+            setAdding(!adding)
+        }
     }
 
     useEffect(() => {
@@ -65,7 +67,10 @@ const TeesList = (props) => {
                         }
                         { !adding && 
                             <div onClick={handleAdding}>
-                                <h3>Add Tee</h3>
+                                {
+                                    localStorage.getItem('token') != null &&
+                                    <h3>+</h3>
+                                }
                             </div>
                         }
                                 </div>

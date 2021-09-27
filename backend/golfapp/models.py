@@ -22,7 +22,6 @@ class GolferUser(AbstractUser):
     GENDER_CHOICES = ( ('MALE', 'Male'),
                      ('FEMALE', 'Female'), )
 
-    pass
     # add additional fields in here
     gender = models.CharField(choices=GENDER_CHOICES, max_length=255)
 
@@ -83,9 +82,6 @@ class Tee(models.Model):
     #color = models.CharField(choices=COLOR_CHOICES, blank=True, null=True, max_length=255)
     yards = models.IntegerField(validators=[MaxValueValidator(1000), MinValueValidator(1)])
     hole = models.ForeignKey('Hole', on_delete=CASCADE, null=True, blank=True, related_name='tees')
-
-
-
 
     #class Meta:
     #    unique_together = (('tee_color','hole'),) # only have one of each color on the hole

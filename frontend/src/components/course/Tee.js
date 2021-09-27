@@ -17,7 +17,7 @@ const Tee = (props) => {
             hole: props.tee.hole 
         };
       
-        ApiService.update('tees', props.tee.id, data)
+        ApiService.update('tees', props.tee.id, data, localStorage.getItem('token'))
             .then(response => {
                 props.handleChangeProps();
             })
@@ -27,7 +27,9 @@ const Tee = (props) => {
     }
 
     const handleEditing = () => {
-        setEditing(!editing)
+        if (localStorage.getItem('token') != null) {
+            setEditing(!editing)
+        }
     }
 
     let viewMode = {}
