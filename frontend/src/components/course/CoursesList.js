@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom"
 import ApiService from "../../services/ApiService";
+import axios from 'axios';
+
 import CourseForm from './CourseForm';
 
 import CourseListItem from "./CourseListItem";
@@ -8,11 +10,17 @@ import CourseListItem from "./CourseListItem";
 const CoursesList = (props) => {
 
     const [courses, setCourses] = useState([]);
+    const [prevPage, setPrevPage] = useState("");
+    const [nextPage, setNextPage] = useState("");
 
-    const retrieveCourses = () => {
-        ApiService.getAll('courses')
+    const retrieveCourses = (link) => {
+        axios.get(link)
             .then(response => {
-                setCourses(response.data);
+                setCourses(response.data.results);
+                    setPrevPage(response.data.previous);
+
+                    setNextPage(response.data.next);
+                
             })
             .catch(e => {
                 console.log(e);
@@ -27,7 +35,7 @@ const CoursesList = (props) => {
             tee_colors: colors
         };
       
-        ApiService.create('courses' , data, localStorage.getItem('token'))
+        ApiService.create('courses', data, localStorage.getItem('token'))
             .then(response => {
                 retrieveCourses();
             })
@@ -40,11 +48,19 @@ const CoursesList = (props) => {
     }
 
     useEffect(() => {
-        retrieveCourses();
+        retrieveCourses("http://localhost:8000/api/courses/");
     }, [])
 
     return (
         <div>
+            <div>
+                { prevPage &&
+                <button onClick={() => retrieveCourses(prevPage)} >prev</button>
+                }
+                { nextPage && 
+                <button onClick={() => retrieveCourses(nextPage)}>next</button>
+                }
+            </div>
             {courses &&
                 courses.map((course, index) => (
                 <Link to={`/courses/${course.id}/`}>
@@ -53,14 +69,13 @@ const CoursesList = (props) => {
                         course={course}
                     />
                 </Link>
-                ))}
-                { localStorage.getItem('token') != null &&
-                <CourseForm 
-                addCourseProps={addCourse}
-                onSubmit={onSubmit}
-                />
-                }
-
+            ))}
+            { localStorage.getItem('token') != null &&
+            <CourseForm 
+            addCourseProps={addCourse}
+            onSubmit={onSubmit}
+            />
+            }
         </div>
     );
 };

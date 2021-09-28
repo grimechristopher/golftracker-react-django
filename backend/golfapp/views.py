@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from rest_framework import viewsets, permissions
-from django.contrib.auth.models import Group
+
+from rest_framework.pagination import PageNumberPagination
 
 from .models import GolferUser, Course, Hole, Tee, TeeColor
 from .serializers import GolferUserSerializer, CourseSerializer, CourseDetailSerializer, HolesSerializer, TeesSerializer, TeeColorsSerializer
@@ -12,8 +13,14 @@ class GolferUserViewSet(viewsets.ModelViewSet):
     queryset = GolferUser.objects.all()
     permission_classes = [permissions.IsAuthenticated]
 
+class CourseListPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 1000
+
 class CourseViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    pagination_class = CourseListPagination
 
     serializer_class = CourseSerializer
     queryset = Course.objects.all()
