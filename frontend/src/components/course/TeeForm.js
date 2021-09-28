@@ -11,7 +11,6 @@ const TeeForm = (props) => {
         yards: ""
     })
 
-    const[colorOptions, setColorOptions] = useState([]);
     const[isValid, setIsValid] = useState(true);
 
     const onChange = e => {
@@ -21,22 +20,6 @@ const TeeForm = (props) => {
         })
     }
     
-    const retrieveTeeColors = () => {
-        let container = [];
-        ApiService.getAll("teecolors")
-        .then(response => {
-            response.data.forEach(element => {
-                let obj = {};
-                obj["value"] = element.id;
-                obj["label"] = element.name;
-                container.push(obj);
-            });
-            setColorOptions(container);
-        })
-        .catch(e => {
-            console.log(e.response.data);
-        });
-    }
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -105,7 +88,7 @@ const TeeForm = (props) => {
                 yards: props.tee.yards,
             })
         }  
-        retrieveTeeColors();
+        //retrieveTeeColors();
   
       }, [props.tee])
 
