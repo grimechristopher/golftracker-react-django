@@ -3,7 +3,7 @@ from rest_framework.validators import UniqueTogetherValidator
 
 from rest_auth.registration.serializers import RegisterSerializer
 
-from .models import COLOR_CHOICES, GolferUser, Course, Hole, Tee, TeeColor
+from .models import COLOR_CHOICES, GolferUser, Course, Hole, Tee, TeeColor, Round
 
 ## Serializers for each model. Will allow me to Create, Update, Delete
 
@@ -85,3 +85,11 @@ class RegistrationSerializer(RegisterSerializer):
         user.gender = self.validated_data.get('gender', '')
 
         user.save(update_fields=['gender'])
+
+class RoundsListSerializer(serializers.ModelSerializer):
+    created_on = serializers.DateTimeField(format="%I:%M %p on %A, %B %d, %Y")
+    course = CourseSerializer()
+
+    class Meta:
+        model = Round
+        fields = ('id', 'name', 'created_on', 'course' )

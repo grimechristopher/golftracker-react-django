@@ -25,6 +25,8 @@ router.register(r'courses', views.CourseViewSet)
 router.register(r'holes', views.HoleViewSet)
 router.register(r'tees', views.TeeViewSet)
 router.register(r'teecolors', views.TeeColorViewSet)
+router.register(r'rounds', views.RoundViewSet, basename='MyModel')
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),

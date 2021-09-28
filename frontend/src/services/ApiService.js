@@ -2,11 +2,27 @@ import axios from 'axios';
 
 const API_BASE_URL = "http://localhost:8000/api/";
 
-const getAll = (model) => {
+const getAll = (model, token) => {
+    if (token) {
+        return axios.get(API_BASE_URL + model + '/', {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Token ${token}`
+            }
+        })
+    }
     return axios.get(API_BASE_URL + model + '/');
 };
 
-const get = (model, id) => {
+const get = (model, id, token) => {
+    if (token) {
+        return axios.get(API_BASE_URL + model + '/' + id + '/', {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Token ${token}`
+            }
+        })
+    }
     return axios.get(API_BASE_URL + model + '/' + id + '/');
 };
 

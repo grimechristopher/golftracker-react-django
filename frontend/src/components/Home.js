@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import AuthService from '../services/AuthService';
+import RoundsList from './round/RoundsList';
 
 const Home = () => {
 
@@ -23,7 +24,10 @@ const Home = () => {
     return (
         <div>
             {loggedIn === true && 
-            <h2>Hello {username}!</h2>
+            <>
+                <h2>Hello {username}!</h2>
+                <RoundsList />
+            </>
             }
         </div>
     );

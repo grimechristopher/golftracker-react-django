@@ -21,7 +21,7 @@ const TeesList = (props) => {
             hole: props.hole.id
         };
       
-        ApiService.create('tees', data, localStorage.getItem('token'), localStorage.getItem('token'))
+        ApiService.create('tees', data, localStorage.getItem('token'))
             .then(response => {
                 props.handleChangeProps();
             })

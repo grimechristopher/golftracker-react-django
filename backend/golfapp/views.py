@@ -3,8 +3,8 @@ from rest_framework import viewsets, permissions
 
 from rest_framework.pagination import PageNumberPagination
 
-from .models import GolferUser, Course, Hole, Tee, TeeColor
-from .serializers import GolferUserSerializer, CourseSerializer, CourseDetailSerializer, HolesSerializer, TeesSerializer, TeeColorsSerializer
+from .models import GolferUser, Course, Hole, Tee, TeeColor, Round
+from .serializers import GolferUserSerializer, CourseSerializer, CourseDetailSerializer, HolesSerializer, TeesSerializer, TeeColorsSerializer, RoundsListSerializer
 
 # Create your views here.
 class GolferUserViewSet(viewsets.ModelViewSet):
@@ -48,3 +48,16 @@ class TeeColorViewSet(viewsets.ModelViewSet):
 
     serializer_class = TeeColorsSerializer
     queryset = TeeColor.objects.all()
+
+
+class RoundViewSet(viewsets.ModelViewSet):
+    permission_classes = [permissions.IsAuthenticated]
+
+    serializer_class = RoundsListSerializer  
+    #queryset = Round.objects.select_related().filter(created_by=request.user)
+    #queryset = Round.objects.all()
+
+    def get_queryset(self):
+        if (self.request.user.is_active):
+            return Round.objects.select_related().filter(created_by=self.request.user)
+
