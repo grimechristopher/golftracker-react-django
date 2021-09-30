@@ -91,7 +91,7 @@ class Tee(models.Model):
         return str(self.tee_color.name) + " Tee on " + str(self.hole)
 
 class Round(models.Model):
-    course = models.ForeignKey('Course', on_delete=models.SET_NULL, null=True)
+    course = models.ForeignKey('Course', on_delete=models.CASCADE, null=False)
     name = models.CharField(max_length=255, null=True, blank=True, verbose_name='Title this round (optional)')
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
     created_on = models.DateTimeField(default=datetime.now)

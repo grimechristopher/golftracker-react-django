@@ -18,6 +18,14 @@ class CourseListPagination(PageNumberPagination):
     page_size_query_param = 'page_size'
     max_page_size = 1000
 
+    # Dont paginate if we dont ask for paginated data
+    #def paginate_queryset(self, queryset, request, view=None):
+    def paginate_queryset(self, queryset, request, view=None):
+        if getattr(request, 'get_all', False):
+            return None
+
+        return super().paginate_queryset(queryset, request, view)
+
 class CourseViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     pagination_class = CourseListPagination

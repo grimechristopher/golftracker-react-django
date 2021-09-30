@@ -37,14 +37,15 @@ const CoursesList = (props) => {
       
         ApiService.create('courses', data, localStorage.getItem('token'))
             .then(response => {
-                retrieveCourses();
+                retrieveCourses("http://localhost:8000/api/courses/");
             })
             .catch(e => {
                 console.log(e.response.data);
         });
     }
+
     const onSubmit = () => {
-        retrieveCourses();
+        retrieveCourses("http://localhost:8000/api/courses/");
     }
 
     useEffect(() => {

@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator
+from pytz import timezone
 
 from rest_auth.registration.serializers import RegisterSerializer
 
@@ -87,9 +88,17 @@ class RegistrationSerializer(RegisterSerializer):
         user.save(update_fields=['gender'])
 
 class RoundsListSerializer(serializers.ModelSerializer):
-    created_on = serializers.DateTimeField(format="%I:%M %p on %A, %B %d, %Y")
-    course = CourseSerializer()
+    created_on = serializers.DateTimeField(format='%Y-%m-%dT%H:%M:%S.%fZ', input_formats=['%Y-%m-%dT%H:%M:%S.%fZ'])
+    #course = CourseSerializer()
+    course_details = CourseSerializer(source='course', read_only=True)
 
     class Meta:
         model = Round
-        fields = ('id', 'name', 'created_on', 'course' )
+        fields = ('id', 'name', 'created_on', 'course', 'course_details' )
+
+    def create(self, validated_data):
+        # add the current User to the validated_data dict and call
+        # the super method which basically only creates a model
+        # instance with that data
+        validated_data['created_by'] = self.context['request'].user
+        return super(RoundsListSerializer, self).create(validated_data)
