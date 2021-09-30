@@ -27,7 +27,6 @@ const RoundsList = () => {
         let data = {
             name: title,
             course: course,
-            tee_color: tee_color,
             created_on: now,
         };
       

@@ -7,7 +7,7 @@ const RoundForm = (props) => {
     const [round, setRound] = useState({
         title: null,
         course: "",
-        tee_color: 1
+        tee_color: ""
     })
 
     const [teeColors, setTeeColors] = useState([]);
@@ -59,11 +59,6 @@ const RoundForm = (props) => {
 
         if (round.course == "") {
             alert("Course must be selected");
-            isValidated = false;
-        }
-
-        if (round.tee_color == "") {
-            alert("Tee Color must be selected");
             isValidated = false;
         }
 
@@ -132,20 +127,24 @@ const RoundForm = (props) => {
                 ))}
                 </select>
             </div>
+
+            { props.round &&
             <div>
-                <select 
-                    name="tee_color"
-                    value={round.tee_color}
-                    onChange={onChange} 
-                >
+            <select 
+                name="tee_color"
+                value={round.tee_color}
+                onChange={onChange} 
+            >
                 {teeColors &&
                     teeColors.map((option) => (
                     <option value={option.value} >
                         {option.label}
                     </option>
                 ))}
-                </select>
-            </div>
+            </select>
+            </div>          
+            }
+
             <div>
                 <button className="input-submit">
                     Start Round
