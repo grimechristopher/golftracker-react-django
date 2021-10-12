@@ -18,7 +18,7 @@ const RoundListItem = (props) => {
                 { props.round.name ? ( 
                     <h2>{props.round.name}</h2>
                 ):(
-                    <h2>{props.round.course_details.name}</h2>
+                    <h2>{}{props.round.course_details.name}</h2>
                 )}
                 <h3>{createdOnLocal}</h3>
             </div>

@@ -89,7 +89,6 @@ class RegistrationSerializer(RegisterSerializer):
 
 class RoundsListSerializer(serializers.ModelSerializer):
     created_on = serializers.DateTimeField(format='%Y-%m-%dT%H:%M:%S.%fZ', input_formats=['%Y-%m-%dT%H:%M:%S.%fZ'])
-    #course = CourseSerializer()
     course_details = CourseSerializer(source='course', read_only=True)
 
     class Meta:
@@ -102,3 +101,11 @@ class RoundsListSerializer(serializers.ModelSerializer):
         # instance with that data
         validated_data['created_by'] = self.context['request'].user
         return super(RoundsListSerializer, self).create(validated_data)
+
+class RoundDetailSerializer(serializers.ModelSerializer):
+    created_on = serializers.DateTimeField(format='%Y-%m-%dT%H:%M:%S.%fZ', input_formats=['%Y-%m-%dT%H:%M:%S.%fZ'])
+    course_details = CourseSerializer(source='course', read_only=True)
+
+    class Meta:
+        model = Round
+        fields = ('id', 'name', 'course_details', 'created_on','tee_color' )

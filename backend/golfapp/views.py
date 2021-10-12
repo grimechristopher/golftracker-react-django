@@ -4,7 +4,7 @@ from rest_framework import viewsets, permissions
 from rest_framework.pagination import PageNumberPagination
 
 from .models import GolferUser, Course, Hole, Tee, TeeColor, Round
-from .serializers import GolferUserSerializer, CourseSerializer, CourseDetailSerializer, HolesSerializer, TeesSerializer, TeeColorsSerializer, RoundsListSerializer
+from .serializers import GolferUserSerializer, CourseSerializer, CourseDetailSerializer, HolesSerializer, TeesSerializer, TeeColorsSerializer, RoundsListSerializer, RoundDetailSerializer
 
 # Create your views here.
 class GolferUserViewSet(viewsets.ModelViewSet):
@@ -68,4 +68,10 @@ class RoundViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         if (self.request.user.is_active):
             return Round.objects.select_related().filter(created_by=self.request.user)
+
+    # Get round details if a specific round is requested
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            return RoundDetailSerializer
+        return RoundsListSerializer
 
