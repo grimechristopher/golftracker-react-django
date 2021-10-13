@@ -62,8 +62,6 @@ class RoundViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     serializer_class = RoundsListSerializer  
-    #queryset = Round.objects.select_related().filter(created_by=request.user)
-    #queryset = Round.objects.all()
 
     def get_queryset(self):
         if (self.request.user.is_active):

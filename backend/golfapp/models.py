@@ -96,7 +96,7 @@ class Round(models.Model):
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
     created_on = models.DateTimeField(default=datetime.now)
     completed_on = models.DateTimeField(null=True, blank=True)
-    tee_color = models.ForeignKey('TeeColor', on_delete=models.SET_NULL, null=True, blank=True, related_name='teecolor')
+    tee_color = models.ForeignKey('TeeColor', on_delete=models.CASCADE, null=False, default="1")
 
     class Meta:
         ordering = ['-created_on']

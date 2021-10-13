@@ -93,7 +93,7 @@ class RoundsListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Round
-        fields = ('id', 'name', 'created_on', 'course', 'course_details' )
+        fields = ('url', 'id', 'name', 'created_on', 'tee_color', 'course', 'course_details' )
 
     def create(self, validated_data):
         # add the current User to the validated_data dict and call
@@ -104,8 +104,10 @@ class RoundsListSerializer(serializers.ModelSerializer):
 
 class RoundDetailSerializer(serializers.ModelSerializer):
     created_on = serializers.DateTimeField(format='%Y-%m-%dT%H:%M:%S.%fZ', input_formats=['%Y-%m-%dT%H:%M:%S.%fZ'])
-    course_details = CourseSerializer(source='course', read_only=True)
+    course = CourseDetailSerializer( read_only=True)
+    tee_color = TeeColorsSerializer( read_only=True)
+
 
     class Meta:
         model = Round
-        fields = ('id', 'name', 'course_details', 'created_on','tee_color' )
+        fields = ('id', 'name', 'tee_color', 'course', 'created_on')

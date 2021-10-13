@@ -11,6 +11,7 @@ const Round = (props) => {
 
     const [round, setRound] = useState([]);
     const [teeColors, setTeeColors] = useState([]);
+    const [selectedColor, setSelectedColor] = useState(1); 
 
     const retrieveRound = (id) => {
         ApiService.get('rounds', id, localStorage.getItem('token'))
@@ -25,10 +26,12 @@ const Round = (props) => {
     };
 
     const onChange = e => {
+        console.log(e.target.value);
         setRound({
           ...round,
           [e.target.name]: e.target.value,
         })
+        setSelectedColor(e.target.value)
     }
 
     const selectColor = () => {
@@ -52,6 +55,27 @@ const Round = (props) => {
         });
     }
 
+    const handleSubmit = e => {
+        e.preventDefault();
+
+        let data = {
+            name: round.name,
+            course: round.course.id,
+            tee_color: selectedColor,
+            created_on: round.created_on // Frustrating... this should not be required. Should be handled by backend
+        };
+
+        console.log(data);
+        ApiService.update('rounds', round.id, data, localStorage.getItem('token'))
+        .then(response => {
+            retrieveRound(round.id);
+        })
+        .catch(e => {
+            console.log(e.response.data);
+        });
+
+    }
+
     useEffect(() => {
         retrieveRound(props.match.params.id);
         retrieveTeeColors(); // ok for now but needs to be changed to only show colors enabled on the course
@@ -60,9 +84,17 @@ const Round = (props) => {
 
     return (
         <div>
+            <div>
+                {round.tee_color &&
+                <h3>{round.tee_color.name}</h3>
+                }
+            </div>
+
+            <form onSubmit={handleSubmit} className="form-container">
+
                 <select 
                     name="tee_colors"
-                    value={round.tee_color}
+                    value={selectedColor}
                     onChange={onChange} 
                 >
                   {teeColors &&
@@ -72,6 +104,14 @@ const Round = (props) => {
                           </option>
                   ))}
                 </select>
+                <div>
+                <button className="input-submit">
+                    Change Color
+                </button>
+                </div>
+
+            </form>
+
         </div>
     );
 };
