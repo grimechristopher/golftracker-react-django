@@ -70,6 +70,7 @@ const Hole = (props) => {
                     course={props.course}
                     hole={props.hole}
                     tees={props.hole.tees}
+                    round={props.round}
                     handleChangeProps={props.handleChangeProps} 
                 />
             }

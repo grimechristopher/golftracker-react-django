@@ -7,6 +7,7 @@ const Home = () => {
 
     const [loggedIn, setLoggedIn] = useState(false);
     const [username, setUsername] = useState('');
+    const [userGender, setUserGender] = useState([]);
 
     useEffect(() => {
         if (localStorage.getItem('token') !== null) {
@@ -16,6 +17,7 @@ const Home = () => {
             .then(response => {
                 console.log(response.data);
                 setUsername(response.data.username);
+                setUserGender(response.data.gender);
             })
 
         }

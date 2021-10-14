@@ -41,13 +41,20 @@ const HolesList = (props) => {
                 <div className={styles.holecell} >
                     <h3>Hole</h3>
                 </div>
-                {props.course.tee_colors &&
-                props.course.tee_colors.map((c, i) => (
-                    <div className={styles.holecell} >
-                        <h4>&nbsp;</h4>
-                    </div>
-                ))
+
+                {!props.round ? 
+                props.tee_colors &&
+                    props.tee_colors.map((c, i) => (
+                        <div className={styles.holecell} >
+                            <h4>&nbsp;</h4>
+                        </div>
+                    )) 
+                : 
+                <div className={styles.holecell} >
+                    <h4>&nbsp;</h4>
+                </div>             
                 }
+
                 <div className={styles.holecell}>
                     <h4>Mens</h4>
                 </div>
@@ -61,6 +68,7 @@ const HolesList = (props) => {
                 key={hole.id}
                 hole={hole}
                 course={props.course}
+                round={props.round}
                 handleChangeProps={props.handleChangeProps}
                 enabledColors={props.enabledColors}
             />

@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import ApiService from "../../services/ApiService";
 
+import ScoreCard from "./ScoreCard";
+import HolesList from "../course/HolesList";
+
 /*
 A Round has a course attached. 
 A Round has one score for each hole on the course. A Round has a selected tee color to play from
@@ -12,13 +15,16 @@ const Round = (props) => {
     const [round, setRound] = useState([]);
     const [teeColors, setTeeColors] = useState([]);
     const [selectedColor, setSelectedColor] = useState(1); 
+    const [loading, setLoading] = useState(true);
 
     const retrieveRound = (id) => {
+        setLoading(true);
         ApiService.get('rounds', id, localStorage.getItem('token'))
             .then(response => {
                 setRound(response.data);
                 //setLoading(false);
                 console.log(response.data);
+                setLoading(false);
             })
             .catch(e => {
                 console.log(e.response.data);
@@ -73,7 +79,10 @@ const Round = (props) => {
         .catch(e => {
             console.log(e.response.data);
         });
+    }
 
+    const handleChange = () => {
+        retrieveRound(round.id);
     }
 
     useEffect(() => {
@@ -84,33 +93,46 @@ const Round = (props) => {
 
     return (
         <div>
-            <div>
-                {round.tee_color &&
-                <h3>{round.tee_color.name}</h3>
-                }
-            </div>
-
-            <form onSubmit={handleSubmit} className="form-container">
-
-                <select 
-                    name="tee_colors"
-                    value={selectedColor}
-                    onChange={onChange} 
-                >
-                  {teeColors &&
-                      teeColors.map((option) => (
-                          <option value={option.value} >
-                              {option.label}
-                          </option>
-                  ))}
-                </select>
-                <div>
-                <button className="input-submit">
-                    Change Color
-                </button>
+            {loading === false && (
+                <>
+                    <div>
+                    {round.tee_color &&
+                    <h3>{round.tee_color.name}</h3>
+                    }
                 </div>
 
-            </form>
+                <form onSubmit={handleSubmit} className="form-container">
+                    <select 
+                        name="tee_colors"
+                        value={selectedColor}
+                        onChange={onChange} 
+                    >
+                    {teeColors &&
+                        teeColors.map((option) => (
+                            <option value={option.value} >
+                                {option.label}
+                            </option>
+                    ))}
+                    </select>
+                    <div>
+                    <button className="input-submit">
+                        Change Color
+                    </button>
+                    </div>
+                </form>
+
+                <div>
+                    <HolesList 
+                        round={round}
+                        course={round.course}
+                        holes={round.course.holes} 
+                        tee_colors={round.tee_color}
+                        handleChangeProps={handleChange} 
+                    />
+                </div>
+            </>
+            )}
+            
 
         </div>
     );

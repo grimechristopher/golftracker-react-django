@@ -13,6 +13,7 @@ const TeesList = (props) => {
     // If no tee matches then display blank space
 
     const [adding, setAdding] = useState(false);
+    const [enabledColors, setEnabledColors] = useState([]);
 
     const addTee = (color, yards) => {
         var data = {
@@ -37,13 +38,20 @@ const TeesList = (props) => {
     }
 
     useEffect(() => {
-    }, [props.course])  
+        if (props.round) {
+            console.log("round prop found");
+            setEnabledColors([props.round.tee_color,]);
+        }
+        else {
+            setEnabledColors(props.course.tee_colors);
+        }
+    }, [])  
 
 
     return (
         <div>
-            {props.course.tee_colors &&
-            props.course.tee_colors.map((tee_color, index) => (
+            {enabledColors &&
+            enabledColors.map((tee_color, index) => (
                 props.tees.filter(tee => tee.tee_color.id === tee_color.id).length > 0 ?
                     props.tees.filter(tee => tee.tee_color.id === tee_color.id).map(tee => (
                         <Tee

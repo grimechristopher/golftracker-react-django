@@ -104,8 +104,8 @@ class RoundsListSerializer(serializers.ModelSerializer):
 
 class RoundDetailSerializer(serializers.ModelSerializer):
     created_on = serializers.DateTimeField(format='%Y-%m-%dT%H:%M:%S.%fZ', input_formats=['%Y-%m-%dT%H:%M:%S.%fZ'])
-    course = CourseDetailSerializer( read_only=True)
-    tee_color = TeeColorsSerializer( read_only=True)
+    course = CourseDetailSerializer(read_only=True)
+    tee_color = TeeColorsSerializer(read_only=True)
 
 
     class Meta:

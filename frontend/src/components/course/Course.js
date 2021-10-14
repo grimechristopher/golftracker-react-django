@@ -115,6 +115,7 @@ const Course = (props) => {
                     <HolesList
                         course={course} 
                         holes={course.holes} 
+                        tee_colors={course.tee_colors}
                         handleChangeProps={handleChange} 
                     />
                     {localStorage.getItem('token') === null &&
