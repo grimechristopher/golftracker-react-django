@@ -102,6 +102,6 @@ class Round(models.Model):
         ordering = ['-created_on']
 
 class Score(models.Model):
-    round = models.ForeignKey('Round', on_delete=models.CASCADE, null=False)
+    round = models.ForeignKey('Round', on_delete=models.CASCADE, null=False, related_name='scores')
     hole = models.ForeignKey('Hole', on_delete=models.SET_NULL, null=True)
-    strokes = models.IntegerField(validators=[MaxValueValidator(100), MinValueValidator(1)])
+    strokes = models.IntegerField(validators=[MaxValueValidator(99), MinValueValidator(1)]) 

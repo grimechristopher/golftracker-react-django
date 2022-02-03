@@ -31,6 +31,11 @@ const Home = () => {
                 <RoundsList />
             </>
             }
+            {loggedIn === false &&
+            <>
+                <h2>Please login to track your rounds</h2>
+            </>
+            }
         </div>
     );
 };

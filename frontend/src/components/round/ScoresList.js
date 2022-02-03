@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ScoreCard = () => {
+const ScoresList = () => {
     return (
         <div>
             

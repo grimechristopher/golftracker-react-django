@@ -58,7 +58,7 @@ const TeesList = (props) => {
                             key={tee.id}
                             course={props.course}
                             tee={tee}
-                            handleChangeProps={props.handleChangeProps}
+                            handleChangeProps={props.handleChangeProps} 
                         />
                     ))
                     :

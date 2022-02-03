@@ -55,6 +55,12 @@ const HolesList = (props) => {
                 </div>             
                 }
 
+                {props.round &&
+                <div className={styles.holecell}>
+                    <h4>Strokes</h4>
+                </div>
+                }
+
                 <div className={styles.holecell}>
                     <h4>Mens</h4>
                 </div>

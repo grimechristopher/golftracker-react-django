@@ -7,6 +7,8 @@ import ApiService from "../../services/ApiService";
 import HoleForm from "./HoleForm";
 import TeesList from "./TeesList";
 
+import Score from "../round/Score";
+
 const Hole = (props) => {
 
     const [editing, setEditing] = useState(false);
@@ -71,10 +73,17 @@ const Hole = (props) => {
                     hole={props.hole}
                     tees={props.hole.tees}
                     round={props.round}
-                    handleChangeProps={props.handleChangeProps} 
+                    handleChangeProps={props.handleChangeProps}  
+                />
+            }  
+            {props.round &&        
+                <Score
+                    round={props.round}
+                    hole={props.hole}
+                    handleChangeProps={props.handleChangeProps}
                 />
             }
-            
+         
             { !editing && 
             <>
                 <div className={styles.holecell}>

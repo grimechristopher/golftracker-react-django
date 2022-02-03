@@ -4,7 +4,7 @@ from pytz import timezone
 
 from rest_auth.registration.serializers import RegisterSerializer
 
-from .models import COLOR_CHOICES, GolferUser, Course, Hole, Tee, TeeColor, Round
+from .models import COLOR_CHOICES, GolferUser, Course, Hole, Tee, TeeColor, Round, Score
 
 ## Serializers for each model. Will allow me to Create, Update, Delete
 
@@ -102,12 +102,18 @@ class RoundsListSerializer(serializers.ModelSerializer):
         validated_data['created_by'] = self.context['request'].user
         return super(RoundsListSerializer, self).create(validated_data)
 
+class ScoreSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Score
+        fields = ('id', 'round', 'hole', 'strokes')
+
 class RoundDetailSerializer(serializers.ModelSerializer):
     created_on = serializers.DateTimeField(format='%Y-%m-%dT%H:%M:%S.%fZ', input_formats=['%Y-%m-%dT%H:%M:%S.%fZ'])
     course = CourseDetailSerializer(read_only=True)
     tee_color = TeeColorsSerializer(read_only=True)
-
+    scores = ScoreSerializer(many=True,)
 
     class Meta:
         model = Round
-        fields = ('id', 'name', 'tee_color', 'course', 'created_on')
+        fields = ('id', 'name', 'tee_color', 'course', 'created_on', 'scores')
+

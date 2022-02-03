@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ApiService from "../../services/ApiService";
 
-import ScoreCard from "./ScoreCard";
 import HolesList from "../course/HolesList";
 
 /*
@@ -16,6 +15,11 @@ const Round = (props) => {
     const [teeColors, setTeeColors] = useState([]);
     const [selectedColor, setSelectedColor] = useState(1); 
     const [loading, setLoading] = useState(true);
+    const [complete, setComplete] = useState(false);
+    const [stats, setStats] = useState({
+        par: "",
+        totalScore: 0,
+    });
 
     const retrieveRound = (id) => {
         setLoading(true);
@@ -88,7 +92,41 @@ const Round = (props) => {
     useEffect(() => {
         retrieveRound(props.match.params.id);
         retrieveTeeColors(); // ok for now but needs to be changed to only show colors enabled on the course
+
     }, [])  
+
+    useEffect(() => {
+
+        let temp = 0;
+        let t = 0;
+
+        if (round.scores) {
+            if (round.scores.length >= round.course.holes.length) {
+                setComplete(true);
+
+                for (let i in round.scores) {
+                    t += round.scores[i].strokes;
+                }
+                setStats({
+                    ...stats,
+                    par: temp,
+                    totalScore: t
+                })
+                console.log(t);
+            }   
+        }
+        if (round.course) {
+            for (let i in round.course.holes) {
+                temp += round.course.holes[i].mens_par;
+            }
+            setStats({
+                ...stats,
+                par: temp,
+                totalScore: t
+            })
+            console.log(temp);
+        }
+    }, [round])
 
 
     return (
@@ -130,8 +168,22 @@ const Round = (props) => {
                         handleChangeProps={handleChange} 
                     />
                 </div>
+
+                {
+                    complete &&
+                    <>
+                    <h3>Yeah! You finished a round!</h3>
+                    <h3>Par is {stats.par}</h3>
+                    <h3>You shot {stats.totalScore}</h3>
+                    </>
+                }
+                {
+                    
+                }
             </>
             )}
+
+
             
 
         </div>
