@@ -8,6 +8,7 @@ import RoundForm from './RoundForm';
 const RoundsList = () => {
 
     const [rounds, setRounds] = useState([]);
+    const [addingRound, setAddingRound] = useState(false);
 
     const retrieveRounds = () => {
         ApiService.getAll('rounds', localStorage.getItem('token'))
@@ -43,6 +44,13 @@ const RoundsList = () => {
 
     const handleSubmit = () => {
         retrieveRounds();
+        setAddingRound(!addingRound);
+    }
+
+    const handleAddingRound = () => {
+        if (localStorage.getItem('token') != null) {
+            setAddingRound(!addingRound)
+        }
     }
 
     useEffect(() => {
@@ -63,10 +71,16 @@ const RoundsList = () => {
             ))}
         </div>
         <div>
+        { !addingRound && localStorage.getItem('token') != null &&
+                <button onClick={handleAddingRound}>Start A New Round</button>
+        }
+        { addingRound && localStorage.getItem('token') != null &&
             <RoundForm 
                 onSubmit={handleSubmit} 
                 addRoundProps={addRound} 
-            />
+            />        
+        }    
+
         </div>
         </>
     );

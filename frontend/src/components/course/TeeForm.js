@@ -121,7 +121,7 @@ const TeeForm = (props) => {
                 name="yards"
                 onChange={onChange}
             />
-            <button type="submit">Submit Tee</button>
+            <button type="submit" className={styles.cellSubmit} >Submit Tee</button>
         </form>
     );
 };

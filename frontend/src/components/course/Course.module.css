@@ -16,3 +16,10 @@
 .holeinput {
     max-width: 4em;
 }
+
+.cellSubmit {
+    /*Hide those submit buttons! I dont want em!*/
+    visibility: hidden;
+    position: absolute;
+    margin-left: 100%;
+}

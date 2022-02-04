@@ -56,6 +56,7 @@ const HoleForm = (props) => {
         }
 
         props.handleChangeProps();
+        props.handleSubmit();
         
     }
 
@@ -96,7 +97,7 @@ const HoleForm = (props) => {
                 />
             </div>
 
-        <button className="input-submit">
+        <button className="input-submit" className={styles.cellSubmit}>
             Submit
         </button>
         </form>

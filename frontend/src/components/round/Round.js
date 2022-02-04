@@ -20,6 +20,7 @@ const Round = (props) => {
         par: "",
         totalScore: 0,
     });
+    const [createdOnLocal, setCreatedOnLocal] = useState([]);
 
     const retrieveRound = (id) => {
         setLoading(true);
@@ -92,7 +93,6 @@ const Round = (props) => {
     useEffect(() => {
         retrieveRound(props.match.params.id);
         retrieveTeeColors(); // ok for now but needs to be changed to only show colors enabled on the course
-
     }, [])  
 
     useEffect(() => {
@@ -126,6 +126,15 @@ const Round = (props) => {
             })
             console.log(temp);
         }
+
+        if (round.created_on) {
+            let utcDate = round.created_on;
+            let localDate = new Date(utcDate).toString();
+    
+            console.log(localDate);
+            setCreatedOnLocal(localDate);
+        }
+
     }, [round])
 
 
@@ -134,8 +143,17 @@ const Round = (props) => {
             {loading === false && (
                 <>
                     <div>
+                        { round.name &&
+                            <h2>{round.name}</h2>
+                        }
+                        { !round.name &&
+                            <h2>Round at {round.course.name}</h2>
+                        }
+                        <h3>{new Date(round.created_on).toLocaleString()}</h3>
+                    </div>
+                    <div>
                     {round.tee_color &&
-                    <h3>{round.tee_color.name}</h3>
+                    <h3>Playing from the {round.tee_color.name} tees</h3>
                     }
                 </div>
 

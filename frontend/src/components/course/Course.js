@@ -126,11 +126,7 @@ const Course = (props) => {
                     
                     
                     <hr />
-                    <h4>TeeColors: </h4>
-                    {course.tee_colors &&
-                    course.tee_colors.map((colors, index) => (
-                        <h5>{colors.name}</h5>
-                    ))}
+
                     
                 </div>
                 </>

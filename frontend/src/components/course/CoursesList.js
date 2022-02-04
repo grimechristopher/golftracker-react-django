@@ -12,6 +12,13 @@ const CoursesList = (props) => {
     const [courses, setCourses] = useState([]);
     const [prevPage, setPrevPage] = useState("");
     const [nextPage, setNextPage] = useState("");
+    const [addingCourse, setAddingCourse] = useState(false);
+
+    const handleAddingCourse = () => {
+        if (localStorage.getItem('token') != null) {
+            setAddingCourse(!addingCourse)
+        }
+    }
 
     const retrieveCourses = (link) => {
         axios.get(link)
@@ -46,6 +53,7 @@ const CoursesList = (props) => {
 
     const onSubmit = () => {
         retrieveCourses("http://localhost:8000/api/courses/");
+        setAddingCourse(!addingCourse);
     }
 
     useEffect(() => {
@@ -71,12 +79,17 @@ const CoursesList = (props) => {
                     />
                 </Link>
             ))}
-            { localStorage.getItem('token') != null &&
-            <CourseForm 
-            addCourseProps={addCourse}
-            onSubmit={onSubmit}
-            />
+
+            { !addingCourse && localStorage.getItem('token') != null &&
+                <button onClick={handleAddingCourse}>Add A Course</button>
             }
+            { addingCourse && localStorage.getItem('token') != null &&
+                <CourseForm 
+                addCourseProps={addCourse}
+                onSubmit={onSubmit}
+                />            
+            }            
+
         </div>
     );
 };

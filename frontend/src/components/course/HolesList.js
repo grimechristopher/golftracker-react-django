@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
 
 import styles from "./Course.module.css";
 
@@ -8,6 +8,8 @@ import Hole from './Hole';
 import HoleForm from './HoleForm';
 
 const HolesList = (props) => {
+
+    const [addingHole, setAddingHole] = useState(false);
 
     const addHole = (number, title, mens_par, womens_par ) => {
         var data = {
@@ -35,6 +37,12 @@ const HolesList = (props) => {
         })
     }
 
+    const handleAddingHole = () => {
+        if (localStorage.getItem('token') != null) {
+            setAddingHole(!addingHole)
+        }
+    }
+
     return (
         <div className={styles.holescontainer} >
             <div className={styles.holecontainer} >
@@ -46,12 +54,12 @@ const HolesList = (props) => {
                 props.tee_colors &&
                     props.tee_colors.map((c, i) => (
                         <div className={styles.holecell} >
-                            <h4>&nbsp;</h4>
+                            <h4>{c.name}</h4>
                         </div>
                     )) 
                 : 
                 <div className={styles.holecell} >
-                    <h4>&nbsp;</h4>
+                    <h4>{props.round.tee_color.name}</h4>
                 </div>             
                 }
 
@@ -82,11 +90,14 @@ const HolesList = (props) => {
             {props.holes &&
             <>
             {props.holes.length > 0 && localStorage.getItem('token') != null &&
-            <button onClick={() => deleteHole()}>Delete Last Hole</button>
+                <button onClick={() => deleteHole()}>Delete Last Hole</button>
             }
-            { localStorage.getItem('token') != null &&
-            <HoleForm addHoleProps={addHole} course={props.course} handleChangeProps={props.handleChangeProps} holesLength={props.holesLength}/>
+            { !addingHole && localStorage.getItem('token') != null &&
+                <button onClick={handleAddingHole}>+ Hole</button>
             }
+            { addingHole && localStorage.getItem('token') != null &&
+                <HoleForm addHoleProps={addHole} course={props.course} handleChangeProps={props.handleChangeProps} holesLength={props.holesLength} handleSubmit={handleAddingHole}/>
+            }            
             </>
             }
         </div>

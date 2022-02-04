@@ -63,7 +63,7 @@ const ScoreForm = (props) => {
                 name="strokes"
                 onChange={onChange}
             />
-            <button type="submit">Submit Score</button>
+            <button type="submit" className={styles.cellSubmit} >Submit Score</button>
         </form>
     );
 };
