@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect} from "react";
 
 import styles from "./Course.module.css"
 
@@ -84,6 +84,7 @@ const HoleForm = (props) => {
                     value={hole.mens_par}
                     name="mens_par"
                     onChange={onChange}
+                    autoFocus
                 />
             </div>
             <div className={styles.holecell}>
