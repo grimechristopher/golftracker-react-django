@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import styles from "./Course.module.css";
 
@@ -10,8 +10,8 @@ const TeeForm = (props) => {
         tee_color: 1,
         yards: ""
     })
-
     const[isValid, setIsValid] = useState(true);
+    const inputRef = useRef(null);
 
     const onChange = e => {
         setTee({
@@ -19,7 +19,6 @@ const TeeForm = (props) => {
           [e.target.name]: e.target.value,
         })
     }
-    
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -69,10 +68,11 @@ const TeeForm = (props) => {
         props.handleSubmit();
 
     }
+
     
     useEffect(() => {
-        
-    }, [])
+        inputRef.current.focus();
+    }, [inputRef])
 
     useEffect(() => {
         if (props.color) {
@@ -89,7 +89,6 @@ const TeeForm = (props) => {
             })
         }  
         //retrieveTeeColors();
-  
       }, [props.tee])
 
     return (
@@ -114,10 +113,11 @@ const TeeForm = (props) => {
         */}
             <input
                 type="text"
+                ref={inputRef}
                 //className="input-number"
                 className={styles.holeinput}
                 placeholder="yards"
-                value={tee.yards}
+                defaultValue={tee.yards}
                 name="yards"
                 onChange={onChange}
             />
