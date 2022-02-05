@@ -10,6 +10,7 @@ import HoleForm from './HoleForm';
 const HolesList = (props) => {
 
     const [addingHole, setAddingHole] = useState(false);
+    const [stats, setStats] = useState(false);
 
     const addHole = (number, title, mens_par, womens_par ) => {
         var data = {
@@ -42,6 +43,66 @@ const HolesList = (props) => {
             setAddingHole(!addingHole)
         }
     }
+
+    useEffect(() => {
+        let mPar = 0;
+        let wPar = 0;
+        let score = 0;
+        let yrds = 0;
+
+        if (props.holes) {
+            for (let i in props.holes) {
+                mPar += props.holes[i].mens_par;
+                wPar += props.holes[i].womens_par;
+            }
+        }
+        if (props.round) {
+            for (let i in props.round.scores) {
+                score += props.round.scores[i].strokes;
+            }
+        }
+        if (props.round) {
+            console.log(props.round);
+            // Oh the yards are gonna be complicated
+            for (let i in props.round.course.holes) {
+                for (let j in props.round.course.holes[i].tees) {
+                    if (props.round.course.holes[i].tees[j].tee_color.id === props.round.tee_color.id) {
+                        yrds += props.round.course.holes[i].tees[j].yards;
+                    }
+                }
+            }
+            // That wasnt too bad... Now for the courses 
+        }
+        let yardsArray = [];
+        if (props.course) {
+            yardsArray = Array(props.course.tee_colors.length).fill(0); // Fill an array of the correct size with 0 to prevent NaN when incrementing
+            console.log(props.course);
+            for (let i in props.course.tee_colors) { // for each teeColor i will asign yards to a var in an array
+                for (let j in props.course.holes) {
+                    for (let k in props.course.holes[j].tees) {
+                        if (props.course.holes[j].tees[k].tee_color.id === props.course.tee_colors[i].id) {
+                            yardsArray[i] += props.course.holes[j].tees[k].yards;
+                            // incrementing to empty array causes NaN
+                        }
+                    }
+                }
+            }
+            // I almost cant believe this worked... Seems too simple.
+        }
+        console.log(yardsArray);
+
+        setStats({
+            ...stats,
+            mensPar: mPar,
+            womensPar: wPar,
+            totalScore: score,
+            totalYards: yrds,
+            allYards: yardsArray,
+            //totalScore: t
+        })
+        console.log(mPar);
+
+    }, [props.holes])  
 
     return (
         <div className={styles.holescontainer} >
@@ -87,6 +148,41 @@ const HolesList = (props) => {
                 enabledColors={props.enabledColors}
             />
             ))}
+
+                
+            <div className={styles.holecontainer} >
+                <div className={styles.holecell} >
+                    <h3>Total</h3>
+                </div>
+                {props.course.tee_colors && !props.round &&
+                props.course.tee_colors.map((t, index) => (
+                    <div className={styles.holecell}>
+                        { stats &&
+                            <h3>{stats.allYards[index]}</h3>
+                        }
+                    </div>
+                ))}
+                { props.round &&
+                <>
+                    <div className={styles.holecell}>
+                        <h3>{stats.totalYards}</h3>
+                    </div>
+                    <div className={styles.holecell}>
+                        <h3>{stats.totalScore}</h3>
+                    </div>
+                </>
+                }
+
+                <div className={styles.holecell}>
+                    <h3>{stats.mensPar}</h3>
+                </div>
+                <div className={styles.holecell}>
+                    <h3>{stats.womensPar}</h3>
+                </div>
+            </div>
+
+
+
             {props.holes &&
             <>
             {props.holes.length > 0 && localStorage.getItem('token') != null &&
