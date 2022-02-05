@@ -120,6 +120,7 @@ const TeeForm = (props) => {
                 defaultValue={tee.yards}
                 name="yards"
                 onChange={onChange}
+                onBlur={handleSubmit}
             />
             <button type="submit" className={styles.cellSubmit} >Submit Tee</button>
         </form>

@@ -14,6 +14,10 @@
 }
 
 .holeinput {
+    /*display: block;*/
+    text-align: center;
+    height: 4em;
+    line-height: 100%;
     max-width: 4em;
 }
 

@@ -191,8 +191,6 @@ const Round = (props) => {
                     complete &&
                     <>
                     <h3>Yeah! You finished a round!</h3>
-                    <h3>Par is {stats.par}</h3>
-                    <h3>You shot {stats.totalScore}</h3>
                     </>
                 }
                 {

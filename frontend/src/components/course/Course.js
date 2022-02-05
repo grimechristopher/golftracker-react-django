@@ -124,7 +124,6 @@ const Course = (props) => {
                     </div>
                     }
                     
-                    
                     <hr />
 
                     

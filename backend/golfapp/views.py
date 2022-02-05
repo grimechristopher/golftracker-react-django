@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, filters
 
 from rest_framework.pagination import PageNumberPagination
 
@@ -31,7 +31,23 @@ class CourseViewSet(viewsets.ModelViewSet):
     pagination_class = CourseListPagination
 
     serializer_class = CourseSerializer
+
+    #def get_queryset(self):
     queryset = Course.objects.all()
+    search_fields = ['name', 'city', 'state']
+    filter_backends = (filters.SearchFilter,)
+        #coursefilter = self.request.query_params.get('coursefilter')
+        #if coursefilter is not None:
+        #    queryset = queryset.filter(course__name=coursefilter)
+        #return queryset
+
+    #def get_queryset(self):
+    #    queryset = self.queryset
+    #    coursefilter = self.request.query_params.get('search')
+    #    query_set = queryset
+    #    if coursefilter is not None:
+    #        query_set = queryset.filter(course__name=coursefilter)
+    #    return query_set
 
     # Get course details if a specific course is requested /courses/id
     def get_serializer_class(self):

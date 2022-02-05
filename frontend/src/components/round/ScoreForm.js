@@ -63,6 +63,7 @@ const ScoreForm = (props) => {
                 name="strokes"
                 onChange={onChange}
                 autoFocus
+                onBlur={handleSubmit}
             />
             <button type="submit" className={styles.cellSubmit} >Submit Score</button>
         </form>

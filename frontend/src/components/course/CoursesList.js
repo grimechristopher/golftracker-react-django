@@ -10,7 +10,7 @@ import CourseListItem from "./CourseListItem";
 const CoursesList = (props) => {
 
     const [courses, setCourses] = useState([]);
-    const [filteredCourses, setFilteredCourses] = useState([]);
+    //const [filteredCourses, setFilteredCourses] = useState([]);
     const [prevPage, setPrevPage] = useState("");
     const [nextPage, setNextPage] = useState("");
     const [addingCourse, setAddingCourse] = useState(false);
@@ -59,14 +59,15 @@ const CoursesList = (props) => {
 
     // Basic search function
     const onChangeSearch = (e) => {
+        // Initial solution only worked on non paginated results
         let query = e.target.value;
         query = query.toLowerCase().split(' ').join('');
-        console.log(query);
-        let result = courses.filter(course => course.name.toLowerCase().includes(query) 
-                                           || course.city.toLowerCase().includes(query) 
-                                           || course.state.toLowerCase().includes(query) );
-        console.log(result);
-        setFilteredCourses(result);
+        //let result = courses.filter(course => course.name.toLowerCase().includes(query) 
+        //                                   || course.city.toLowerCase().includes(query) 
+        //                                   || course.state.toLowerCase().includes(query) );
+        //setFilteredCourses(result);
+        // Uses the django backend search
+        retrieveCourses("http://localhost:8000/api/courses/?search="+ query);
         
     }
 
@@ -92,16 +93,7 @@ const CoursesList = (props) => {
                 <button onClick={() => retrieveCourses(nextPage)}>next</button>
                 }
             </div>
-            {filteredCourses && 
-                filteredCourses.map((course, index) => (
-                    <Link to={`/courses/${course.id}/`}>
-                        <CourseListItem 
-                            key={course.id}
-                            course={course}
-                        />
-                    </Link>             
-            ))}
-            {courses && !filteredCourses &&
+            {courses &&
                 courses.map((course, index) => (
                 <Link to={`/courses/${course.id}/`}>
                     <CourseListItem 
