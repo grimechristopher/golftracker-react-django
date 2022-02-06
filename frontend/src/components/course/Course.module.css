@@ -1,5 +1,7 @@
 .holescontainer {
     display: flex;
+    overflow-x: scroll;
+    white-space: nowrap;
 }
 .holecontainer {
     min-width: 4em;

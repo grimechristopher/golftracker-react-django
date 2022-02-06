@@ -71,8 +71,8 @@ const TeeForm = (props) => {
 
     
     useEffect(() => {
-        inputRef.current.focus();
-    }, [inputRef])
+        //inputRef.current.focus();
+    }, [])
 
     useEffect(() => {
         if (props.color) {
@@ -113,7 +113,7 @@ const TeeForm = (props) => {
         */}
             <input
                 type="text"
-                ref={inputRef}
+                //ref={inputRef}
                 //className="input-number"
                 className={styles.holeinput}
                 placeholder="yards"

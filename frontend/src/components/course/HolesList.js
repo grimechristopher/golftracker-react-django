@@ -32,7 +32,7 @@ const HolesList = (props) => {
     }
 
     const deleteHole = () => {
-        ApiService.remove('holes', props.holes[props.holes.length - 1].id, localStorage.getItem('token'))
+        ApiService.remove('holes', props.course.holes[props.course.holes.length - 1].id, localStorage.getItem('token'))
         .then(response => {
             props.handleChangeProps();
         })
@@ -50,10 +50,10 @@ const HolesList = (props) => {
         let score = 0;
         let yrds = 0;
 
-        if (props.holes) {
-            for (let i in props.holes) {
-                mPar += props.holes[i].mens_par;
-                wPar += props.holes[i].womens_par;
+        if (props.course.holes) {
+            for (let i in props.course.holes) {
+                mPar += props.course.holes[i].mens_par;
+                wPar += props.course.holes[i].womens_par;
             }
         }
         if (props.round) {
@@ -101,8 +101,10 @@ const HolesList = (props) => {
             //totalScore: t
         })
         console.log(mPar);
+        console.log("props.course.holes updsated");
+        console.log(props.course.holes);
 
-    }, [props.holes])  
+    }, [props.course.holes])  
 
     return (
         <div className={styles.holescontainer} >
@@ -137,8 +139,8 @@ const HolesList = (props) => {
                     <h4>Ladies</h4>
                 </div>
             </div>
-            {props.holes &&
-            props.holes.map((hole, index) => (
+            {props.course.holes &&
+            props.course.holes.map((hole, index) => (
             <Hole 
                 key={hole.id}
                 hole={hole}
@@ -148,8 +150,7 @@ const HolesList = (props) => {
                 enabledColors={props.enabledColors}
             />
             ))}
-
-                
+  
             <div className={styles.holecontainer} >
                 <div className={styles.holecell} >
                     <h3>Total</h3>
@@ -183,16 +184,40 @@ const HolesList = (props) => {
 
 
 
-            {props.holes &&
+            {props.course.holes &&
             <>
-            {props.holes.length > 0 && localStorage.getItem('token') != null &&
+            {props.course.holes.length > 0 && localStorage.getItem('token') != null &&
                 <button onClick={() => deleteHole()}>Delete Last Hole</button>
             }
             { !addingHole && localStorage.getItem('token') != null &&
                 <button onClick={handleAddingHole}>+ Hole</button>
             }
             { addingHole && localStorage.getItem('token') != null &&
-                <HoleForm addHoleProps={addHole} course={props.course} handleChangeProps={props.handleChangeProps} holesLength={props.holesLength} handleSubmit={handleAddingHole}/>
+            <>
+                <div className={styles.holecontainer}>
+                    <div className={styles.holecell} >
+                        <h3>{props.course.holes.length + 1}</h3>
+                    </div>
+                    {!props.round ? 
+                props.tee_colors &&
+                    props.tee_colors.map((c, i) => (
+                        <div className={styles.holecell} >
+                            <h4>&nbsp;</h4>
+                        </div>
+                    )) 
+                : 
+                <>
+                    <div className={styles.holecell} >
+                        <h4>&nbsp;</h4>
+                    </div>          
+                    <div className={styles.holecell} >
+                        <h4>&nbsp;</h4>
+                    </div>  
+                </>           
+                }
+                    <HoleForm addHoleProps={addHole} course={props.course} handleChangeProps={props.handleChangeProps} holesLength={props.course.holesLength} handleSubmit={handleAddingHole}/>
+                </div>
+            </>
             }            
             </>
             }

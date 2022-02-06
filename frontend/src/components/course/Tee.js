@@ -41,6 +41,12 @@ const Tee = (props) => {
         editMode.display = "none"
     }
 
+    useEffect( () => {
+        console.log('Tee: course updated');
+        console.log(props.course);
+        //console.log("Enabled colors " + props.enabledColors);
+    }, [props.course])
+
     return (
         <>
         <div style={viewMode} onClick={handleEditing} > 

@@ -188,7 +188,7 @@ const Round = (props) => {
                 </div>
 
                 {
-                    complete &&
+                    complete && round.scores.length > 0 &&
                     <>
                     <h3>Yeah! You finished a round!</h3>
                     </>

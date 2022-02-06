@@ -72,6 +72,7 @@ const Course = (props) => {
         if (localStorage.getItem('token') != null) {
             setEditing(!editing)
         }
+        //retrieveCourse(course.id); // To refresh the score card ... Didnt work
     }
 
     let viewMode = {}
@@ -114,7 +115,7 @@ const Course = (props) => {
 
                     <HolesList
                         course={course} 
-                        holes={course.holes} 
+                        //holes={course.holes} 
                         tee_colors={course.tee_colors}
                         handleChangeProps={handleChange} 
                     />

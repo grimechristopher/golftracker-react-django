@@ -27,6 +27,7 @@ router.register(r'tees', views.TeeViewSet)
 router.register(r'teecolors', views.TeeColorViewSet)
 router.register(r'rounds', views.RoundViewSet, basename='round')
 router.register(r'scores', views.ScoreViewSet)
+router.register(r'courseratings', views.CourseRatingViewSet, basename='course_ratings')
 
 
 urlpatterns = [

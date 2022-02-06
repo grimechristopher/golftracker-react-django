@@ -3,8 +3,8 @@ from rest_framework import viewsets, permissions, filters
 
 from rest_framework.pagination import PageNumberPagination
 
-from .models import GolferUser, Course, Hole, Tee, TeeColor, Round, Score
-from .serializers import GolferUserSerializer, CourseSerializer, CourseDetailSerializer, HolesSerializer, TeesSerializer, TeeColorsSerializer, RoundsListSerializer, RoundDetailSerializer, ScoreSerializer
+from .models import GolferUser, Course, Hole, Tee, TeeColor, Round, Score, CourseRating
+from .serializers import GolferUserSerializer, CourseSerializer, CourseDetailSerializer, HolesSerializer, TeesSerializer, TeeColorsSerializer, RoundsListSerializer, RoundDetailSerializer, ScoreSerializer, CourseRatingListSerializer
 
 # Create your views here.
 class GolferUserViewSet(viewsets.ModelViewSet):
@@ -94,3 +94,12 @@ class ScoreViewSet(viewsets.ModelViewSet):
     
     serializer_class = ScoreSerializer 
     queryset = Score.objects.all() 
+
+class CourseRatingViewSet(viewsets.ModelViewSet):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    
+    serializer_class = CourseRatingListSerializer 
+    #queryset = CourseRating.objects.all() 
+    def get_queryset(self):
+        if (self.request.user.is_active):
+            return CourseRating.objects.select_related().filter(created_by=self.request.user)

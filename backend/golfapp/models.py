@@ -19,7 +19,6 @@ COLOR_CHOICES = (
 
 # Create your models here.
 class GolferUser(AbstractUser):
-
     GENDER_CHOICES = ( ('MALE', 'Male'),
                      ('FEMALE', 'Female'), )
 
@@ -46,9 +45,17 @@ class Course(models.Model):
     name = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
     state = models.CharField(max_length=255)
-    tee_colors = models.ManyToManyField('TeeColor', blank=True ,null=True, related_name='courses') # Each hole must be attached to a course.
+    tee_colors = models.ManyToManyField('TeeColor', blank=True, related_name='courses') # Each hole must be attached to a course.
+    rating_average = models.FloatField(default=0)
+    rating_count = models.IntegerField(default=0)
     # Planned to add picture field 
     # Planned to add user comments field
+
+    def update_rating(self):
+        course_rating = self.courserating.all()
+        self.rating_average = course_rating.aggregate(models.Avg('rating')).get('rating__average')
+        self.review_count = course_rating.count()
+        self.save(update_fields=['rating_average', 'rating_count'])
 
     class Meta:
         ordering = ['name']
@@ -105,3 +112,18 @@ class Score(models.Model):
     round = models.ForeignKey('Round', on_delete=models.CASCADE, null=False, related_name='scores')
     hole = models.ForeignKey('Hole', on_delete=models.SET_NULL, null=True)
     strokes = models.IntegerField(validators=[MaxValueValidator(99), MinValueValidator(1)]) 
+
+class CourseRating(models.Model):
+    rating = models.IntegerField(validators=[MaxValueValidator(1), MinValueValidator(5)])
+    course = models.ForeignKey('Course', on_delete=models.CASCADE, null=False, related_name='course_rating')
+    rated_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name='course_rating')
+
+    class Meta:
+        unique_together = ['course', 'rated_by']
+    
+    def __str__(self):
+            return str(self.course.name) + " " + str(self.rated_by.email) + " " + str(self.rating)
+
+    def save(self, *args, **kwargs):
+        super(CourseRating, self).save(*args, **kwargs)
+        self.course.update_rating()

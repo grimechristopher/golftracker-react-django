@@ -37,6 +37,13 @@ const TeesList = (props) => {
         }
     }
 
+    useEffect( () => {
+        //console.log('TeesList: course updated');
+        //console.log(props.course);
+        //console.log("Enabled colors " + props.enabledColors);
+        setEnabledColors(props.course.tee_colors); // HOW DID THIS FIX IT??? When adding/removing an enabled color on the course. The card would not update the tees. 
+    }, [props.course])
+
     useEffect(() => {
         if (props.round) {
             console.log("round prop found");
