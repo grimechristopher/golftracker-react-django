@@ -54,7 +54,7 @@ class Course(models.Model):
     def update_rating(self):
         courseratings = self.course_rating.all()
         self.rating_average = courseratings.aggregate(models.Avg('rating')).get('rating__avg')
-        #self.review_count = courseratings.count()
+        self.rating_count = courseratings.count()
         self.save(update_fields=['rating_average', 'rating_count'])
 
     class Meta:
@@ -122,7 +122,7 @@ class CourseRating(models.Model):
         unique_together = ['course', 'rated_by']
     
     def __str__(self):
-            return str(self.course.name) + " " + str(self.rated_by.email) + " " + str(self.rating)
+            return str(self.course.name) + " "  + " " + str(self.rating)
 
     def save(self, *args, **kwargs):
         super(CourseRating, self).save(*args, **kwargs)

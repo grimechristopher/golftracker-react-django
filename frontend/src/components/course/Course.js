@@ -83,6 +83,52 @@ const Course = (props) => {
             });
     }
 
+    const handleRatingChange = (rating) => {
+        console.log("Handle Rating Chane");
+        if (userRating.length == 0) {
+            console.log("Rating is being added");
+            addCourseRating(rating);
+        }
+        else {
+            console.log("Rating is being updated");
+            updateCourseRating(rating);
+        }
+    }
+
+    // It is at this point that I realize CourseRating should be its own Component... 
+    // I'm learning
+    const updateCourseRating = (r) => {
+        var data = {
+            //rated_by: 0, // Should be overwritten
+            rating: r,
+            course: course.id,
+            //rated_by: // handled by the backend
+        };
+      
+        console.log(data);
+        ApiService.update('courseratings', userRating[0].id, data, localStorage.getItem('token'))
+            .then(response => {
+                retrieveCourse(course.id);
+            })
+            .catch(e => {
+                console.log(e.data);
+        });
+    }
+
+    const addCourseRating = (r) => {
+        var data = {
+            rating: r,
+            course: course.id,
+        };
+      
+        ApiService.create('courseratings', data, localStorage.getItem('token'))
+            .then(response => {
+                retrieveCourse(course.id);
+            })
+            .catch(e => {
+                console.log(e.response.data);
+        });
+    }
 
     const updateCourse = (title, city, state, colors) => {
         var data = {
@@ -154,7 +200,9 @@ const Course = (props) => {
                         }
                         <CourseRatingForm
                             courseId={course.id}
+                            //addRatingProps={handleRatingChange}
                             handleChangeProps={handleChange} 
+                            handleSubmit={handleRatingChange}
                         />
 
                     </div>

@@ -15,10 +15,16 @@ const CourseRatingForm = (props) => {
 
     const handleSubmit = e => {
         e.preventDefault();
-    
+
+        let isValidated = true;
+
+        if (!isFinite(courseRating.rating) || courseRating.rating <= 0 || courseRating.rating > 5 ) {
+            alert("Rating should be a number 1 to 5");
+            isValidated = false;
+        }
 
         //props.handleChangeProps();
-        //props.handleSubmit();
+        props.handleSubmit(courseRating.rating);
     
     }
 
@@ -29,7 +35,7 @@ const CourseRatingForm = (props) => {
                     type="text"
                     //className={styles.holeinput}
                     placeholder="rating"
-                    value={props.rating}
+                    value={courseRating.rating}
                     name="rating"
                     onChange={onChange}
                     //autoFocus

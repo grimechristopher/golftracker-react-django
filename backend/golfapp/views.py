@@ -97,7 +97,7 @@ class ScoreViewSet(viewsets.ModelViewSet):
 
 class CourseRatingViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    filter_backends = (filters.SearchFilter,) # possibly not the way I should get all ratings related to single course
+    #filter_backends = (filters.SearchFilter,) # possibly not the way I should get all ratings related to single course
     search_fields = ['id',]
 
     serializer_class = CourseRatingListSerializer 

@@ -28,6 +28,7 @@ const TeesList = (props) => {
             })
             .catch(e => {
                 console.log(e.response.data);
+                //alert(e.response.data); Can get errors from server and display to user 
         });
     }
 

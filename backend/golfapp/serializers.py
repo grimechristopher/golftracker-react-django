@@ -117,8 +117,20 @@ class RoundDetailSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'tee_color', 'course', 'created_on', 'scores')
 
 class CourseRatingListSerializer(serializers.ModelSerializer):
+    #rated_by = serializers.Field(default=serializers.CurrentUserDefault())
+    #rated_by = serializers.PrimaryKeyRelatedField(read_only=True,)
+    rated_by = serializers.PrimaryKeyRelatedField(queryset=GolferUser.objects.all(), default=serializers.CurrentUserDefault())
 
     class Meta:
         model = CourseRating
         fields = ('id', 'rated_by', 'course', 'rating')
 
+    #def perform_create(self, serializer):
+    #    serializer.save(rated_by=self.request.user)
+
+    #def perform_update(self, serializer):
+    #    serializer.save(rated_by=self.request.user)
+
+    #def perform_create(self, serializer, **kwargs): 
+    #    kwargs['rated_by'] = self.request.user.id
+    #    serializer.save(**kwargs)
