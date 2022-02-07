@@ -97,9 +97,11 @@ class ScoreViewSet(viewsets.ModelViewSet):
 
 class CourseRatingViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    
+    filter_backends = (filters.SearchFilter,) # possibly not the way I should get all ratings related to single course
+    search_fields = ['id',]
+
     serializer_class = CourseRatingListSerializer 
     #queryset = CourseRating.objects.all() 
     def get_queryset(self):
         if (self.request.user.is_active):
-            return CourseRating.objects.select_related().filter(created_by=self.request.user)
+            return CourseRating.objects.select_related().filter(rated_by=self.request.user)

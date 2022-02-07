@@ -52,9 +52,9 @@ class Course(models.Model):
     # Planned to add user comments field
 
     def update_rating(self):
-        course_rating = self.courserating.all()
-        self.rating_average = course_rating.aggregate(models.Avg('rating')).get('rating__average')
-        self.review_count = course_rating.count()
+        courseratings = self.course_rating.all()
+        self.rating_average = courseratings.aggregate(models.Avg('rating')).get('rating__avg')
+        #self.review_count = courseratings.count()
         self.save(update_fields=['rating_average', 'rating_count'])
 
     class Meta:
@@ -114,7 +114,7 @@ class Score(models.Model):
     strokes = models.IntegerField(validators=[MaxValueValidator(99), MinValueValidator(1)]) 
 
 class CourseRating(models.Model):
-    rating = models.IntegerField(validators=[MaxValueValidator(1), MinValueValidator(5)])
+    rating = models.IntegerField(validators=[MaxValueValidator(5), MinValueValidator(1)])
     course = models.ForeignKey('Course', on_delete=models.CASCADE, null=False, related_name='course_rating')
     rated_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name='course_rating')
 

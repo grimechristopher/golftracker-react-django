@@ -73,7 +73,7 @@ class CourseDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Course
-        fields = ('id', 'name', 'city', 'state','tee_colors', 'holes' )
+        fields = ('id', 'name', 'city', 'state','tee_colors', 'holes', 'rating_average', 'rating_count' )
 
 class RegistrationSerializer(RegisterSerializer):
     GENDER_CHOICES = ( ('MALE', 'Male'),
@@ -120,5 +120,5 @@ class CourseRatingListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CourseRating
-        fields = ('id', 'rated_by', 'course')
+        fields = ('id', 'rated_by', 'course', 'rating')
 

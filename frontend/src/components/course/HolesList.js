@@ -74,7 +74,7 @@ const HolesList = (props) => {
             // That wasnt too bad... Now for the courses 
         }
         let yardsArray = [];
-        if (props.course) {
+        if (props.course.tee_colors) {
             yardsArray = Array(props.course.tee_colors.length).fill(0); // Fill an array of the correct size with 0 to prevent NaN when incrementing
             console.log(props.course);
             for (let i in props.course.tee_colors) { // for each teeColor i will asign yards to a var in an array
@@ -101,7 +101,7 @@ const HolesList = (props) => {
             //totalScore: t
         })
         console.log(mPar);
-        console.log("props.course.holes updsated");
+        console.log("props.course.holes updated");
         console.log(props.course.holes);
 
     }, [props.course.holes])  

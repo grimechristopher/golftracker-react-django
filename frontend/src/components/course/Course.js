@@ -5,6 +5,7 @@ import ApiService from "../../services/ApiService";
 
 import HolesList from "./HolesList";
 import CourseForm from "./CourseForm";
+import CourseRatingForm from "./CourseRatingForm";
 
 
 const Course = (props) => {
@@ -13,6 +14,7 @@ const Course = (props) => {
     const [course, setCourse] = useState([]);
     const [enabledColors, setEnabledColors] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [userRating, setUserRating] = useState([]);
 
     let history = useHistory();
 
@@ -35,6 +37,37 @@ const Course = (props) => {
                 //console.log(e.response.data);
             });
     };
+
+    const retrieveRating = () => {
+        //setLoading(true);
+        ApiService.getAll('courseratings', localStorage.getItem('token'))
+            .then(response => {
+                console.log(response.data);
+                console.log(course.id);
+                let d = response.data.filter( rating => rating.course == course.id);
+                setUserRating(d);
+                //setLoading(false);
+                console.log(d);
+                setLoading(false);
+            })
+            .catch(e => {
+                console.log(e.response.data);
+            });
+    };
+
+    /*const retrieveRatings = () => {
+        axios.get("http://localhost:8000/api/courseratings/?search=" + course.id)
+            .then(response => {
+                setUserRating(response.data.results);
+                    setPrevPage(response.data.previous);
+
+                    setNextPage(response.data.next);
+                
+            })
+            .catch(e => {
+                console.log(e);
+            });
+    };*/
 
     const handleChange = () => {
         retrieveCourse(course.id);
@@ -87,6 +120,17 @@ const Course = (props) => {
     useEffect(() => {
         retrieveCourse(props.match.params.id);
     }, [])  
+    useEffect(() => {
+        retrieveRating();
+    }, [course])  
+
+    useEffect(() => {
+        console.log("User Rating:");
+        console.log(userRating);
+        //userRating.filter( uR => { return uR.course.id === course.id });
+        //userRating.Array.filter( rating => rating.course.id === course.id)
+        //console.log(userRating);
+    }, [userRating])  
 
     return (
         <div>
@@ -97,6 +141,22 @@ const Course = (props) => {
                     <div style={viewMode} >
                         <h2>{course.name}</h2>
                         <h3>{course.city}, {course.state}</h3>
+                    </div>
+                    <div>
+                        { course.rating_average < 1 ?
+                            <h4>Be the first to rate this course</h4>
+                        :
+                            <h4>Rating: {course.rating_average}/5</h4>
+                        }
+                        {
+                            userRating.length > 0 &&
+                            <h4>Your Rating: {userRating[0].rating}</h4>
+                        }
+                        <CourseRatingForm
+                            courseId={course.id}
+                            handleChangeProps={handleChange} 
+                        />
+
                     </div>
                     <div style={editMode}>
                         <CourseForm  
