@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link, useHistory } from "react-router-dom"
 
 import ApiService from "../../services/ApiService";
 
@@ -7,6 +8,7 @@ import CourseRatingForm from "./CourseRatingForm";
 const CourseRating = (props) => {
 
     const [userRating, setUserRating] = useState([]);
+    const [editing, setEditing] = useState(false);
 
     const retrieveRating = () => {
         //setLoading(true);
@@ -73,26 +75,44 @@ const CourseRating = (props) => {
         });
     }
 
+    let viewMode = {}
+    let editMode = {}
+    
+    if (editing) {
+        viewMode.display = "none"
+    } else {
+        editMode.display = "none"
+    }
+
+    const handleEditing = () => {
+        if (localStorage.getItem('token') != null) {
+            setEditing(!editing)
+        }
+    }
+
     useEffect(() => {
         retrieveRating();
     }, [props.course])  
 
     return (
         <div>
+
         { props.course.rating_average < 1 ?
-            <h4>Be the first to rate this course</h4>
+            <Link onClick={handleEditing} to='#'>Be the first to rate this course</Link>
         :
-            <h4 >Rating: {props.course.rating_average}/5</h4>
+            <h4>Rating: {props.course.rating_average}/5</h4>
         }
         {
             userRating.length > 0 &&
-            <h4>Your Rating: {userRating[0].rating}</h4>
+            <Link onClick={handleEditing} to='#'>Your Rating: {userRating[0].rating}</Link>
         }
-        <CourseRatingForm
-            courseId={props.course.id}
-            //handleChangeProps={handleChange} 
-            handleSubmit={handleRatingChange}
-        />
+        { editing && localStorage.getItem('token') != null &&
+            <CourseRatingForm
+                courseId={props.course.id}
+                //handleChangeProps={handleChange} 
+                handleSubmit={handleRatingChange}
+            />
+        }
         </div>
     );
 };
