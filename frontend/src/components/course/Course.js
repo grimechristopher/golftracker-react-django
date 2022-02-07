@@ -5,7 +5,7 @@ import ApiService from "../../services/ApiService";
 
 import HolesList from "./HolesList";
 import CourseForm from "./CourseForm";
-import CourseRatingForm from "./CourseRatingForm";
+import CourseRating from "./CourseRating";
 
 
 const Course = (props) => {
@@ -14,7 +14,7 @@ const Course = (props) => {
     const [course, setCourse] = useState([]);
     const [enabledColors, setEnabledColors] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [userRating, setUserRating] = useState([]);
+
 
     let history = useHistory();
 
@@ -38,37 +38,6 @@ const Course = (props) => {
             });
     };
 
-    const retrieveRating = () => {
-        //setLoading(true);
-        ApiService.getAll('courseratings', localStorage.getItem('token'))
-            .then(response => {
-                console.log(response.data);
-                console.log(course.id);
-                let d = response.data.filter( rating => rating.course == course.id);
-                setUserRating(d);
-                //setLoading(false);
-                console.log(d);
-                setLoading(false);
-            })
-            .catch(e => {
-                console.log(e.response.data);
-            });
-    };
-
-    /*const retrieveRatings = () => {
-        axios.get("http://localhost:8000/api/courseratings/?search=" + course.id)
-            .then(response => {
-                setUserRating(response.data.results);
-                    setPrevPage(response.data.previous);
-
-                    setNextPage(response.data.next);
-                
-            })
-            .catch(e => {
-                console.log(e);
-            });
-    };*/
-
     const handleChange = () => {
         retrieveCourse(course.id);
     }
@@ -81,53 +50,6 @@ const Course = (props) => {
             .catch(e => {
                 console.log(e.response.data);
             });
-    }
-
-    const handleRatingChange = (rating) => {
-        console.log("Handle Rating Chane");
-        if (userRating.length == 0) {
-            console.log("Rating is being added");
-            addCourseRating(rating);
-        }
-        else {
-            console.log("Rating is being updated");
-            updateCourseRating(rating);
-        }
-    }
-
-    // It is at this point that I realize CourseRating should be its own Component... 
-    // I'm learning
-    const updateCourseRating = (r) => {
-        var data = {
-            //rated_by: 0, // Should be overwritten
-            rating: r,
-            course: course.id,
-            //rated_by: // handled by the backend
-        };
-      
-        console.log(data);
-        ApiService.update('courseratings', userRating[0].id, data, localStorage.getItem('token'))
-            .then(response => {
-                retrieveCourse(course.id);
-            })
-            .catch(e => {
-                console.log(e.data);
-        });
-    }
-
-    const addCourseRating = (r) => {
-        var data = {
-            rating: r,
-            course: course.id,
-        };
-      
-        ApiService.create('courseratings', data, localStorage.getItem('token'))
-            .then(response => {
-                retrieveCourse(course.id);
-            })
-            .catch(e => {
-                console.log(e.response.data);
-        });
     }
 
     const updateCourse = (title, city, state, colors) => {
@@ -167,16 +89,16 @@ const Course = (props) => {
         retrieveCourse(props.match.params.id);
     }, [])  
     useEffect(() => {
-        retrieveRating();
+        //retrieveRating();
     }, [course])  
 
-    useEffect(() => {
-        console.log("User Rating:");
-        console.log(userRating);
+    //useEffect(() => {
+        //console.log("User Rating:");
+        //console.log(userRating);
         //userRating.filter( uR => { return uR.course.id === course.id });
         //userRating.Array.filter( rating => rating.course.id === course.id)
         //console.log(userRating);
-    }, [userRating])  
+    //}, [userRating])  
 
     return (
         <div>
@@ -188,24 +110,11 @@ const Course = (props) => {
                         <h2>{course.name}</h2>
                         <h3>{course.city}, {course.state}</h3>
                     </div>
-                    <div>
-                        { course.rating_average < 1 ?
-                            <h4>Be the first to rate this course</h4>
-                        :
-                            <h4>Rating: {course.rating_average}/5</h4>
-                        }
-                        {
-                            userRating.length > 0 &&
-                            <h4>Your Rating: {userRating[0].rating}</h4>
-                        }
-                        <CourseRatingForm
-                            courseId={course.id}
-                            //addRatingProps={handleRatingChange}
-                            handleChangeProps={handleChange} 
-                            handleSubmit={handleRatingChange}
-                        />
-
-                    </div>
+                    <CourseRating
+                        //userRating={userRating}
+                        course={course}
+                        handleChangeProps={handleChange}
+                    />
                     <div style={editMode}>
                         <CourseForm  
                             addCourseProps={updateCourse} 
