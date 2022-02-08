@@ -4,7 +4,7 @@ from pytz import timezone
 
 from rest_auth.registration.serializers import RegisterSerializer
 
-from .models import COLOR_CHOICES, GolferUser, Course, Hole, Tee, TeeColor, Round, Score, CourseRating
+from .models import COLOR_CHOICES, GolferUser, Course, Hole, Tee, TeeColor, Round, Score, CourseRating, CoursePicture
 
 ## Serializers for each model. Will allow me to Create, Update, Delete
 
@@ -13,10 +13,26 @@ class GolferUserSerializer(serializers.HyperlinkedModelSerializer):
         model = GolferUser
         fields = ['id', 'url', 'username', 'email', 'gender']
 
+class CoursePictureListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CoursePicture
+        fields = ('id', 'uploaded_by', 'image', 'course', 'is_featured' )
+
+class FeaturedCoursePictureListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CoursePicture
+        fields = ('image',)
+        depth = 1
+
 class CourseSerializer(serializers.ModelSerializer):
+    #course_image = FeaturedCoursePictureListSerializer(many=True,) 
+    course_image = CoursePictureListSerializer(many=True,) 
+    # I really want to only expose the single course_image for this course with is_featured == True
+    # Need to work on that
+
     class Meta:
         model = Course
-        fields = ('url', 'id', 'name', 'city', 'state', 'tee_colors')
+        fields = ('url', 'id', 'name', 'city', 'state', 'tee_colors', 'course_image')
 
 class TeeColorsSerializer(serializers.ModelSerializer):
     class Meta:
@@ -70,10 +86,11 @@ class HoleDetailSerializer(serializers.ModelSerializer):
 class CourseDetailSerializer(serializers.ModelSerializer):
     holes = HoleDetailSerializer(many=True,)
     tee_colors = TeeColorsSerializer(many=True,)
+    course_image = CoursePictureListSerializer(many=True,) 
 
     class Meta:
         model = Course
-        fields = ('id', 'name', 'city', 'state','tee_colors', 'holes', 'rating_average', 'rating_count' )
+        fields = ('id', 'name', 'city', 'state','tee_colors', 'holes', 'rating_average', 'rating_count', 'course_image' )
 
 class RegistrationSerializer(RegisterSerializer):
     GENDER_CHOICES = ( ('MALE', 'Male'),
@@ -134,3 +151,4 @@ class CourseRatingListSerializer(serializers.ModelSerializer):
     #def perform_create(self, serializer, **kwargs): 
     #    kwargs['rated_by'] = self.request.user.id
     #    serializer.save(**kwargs)
+

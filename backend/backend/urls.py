@@ -15,6 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls import url
+from django.views.static import serve
+from django.conf import settings
 
 from rest_framework import routers
 from golfapp import views
@@ -28,7 +31,7 @@ router.register(r'teecolors', views.TeeColorViewSet)
 router.register(r'rounds', views.RoundViewSet, basename='round')
 router.register(r'scores', views.ScoreViewSet)
 router.register(r'courseratings', views.CourseRatingViewSet, basename='course_ratings')
-
+router.register(r'coursepictures', views.CoursePictureViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -37,5 +40,7 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
     path('auth/', include('rest_auth.urls')),    
-    path('auth/register/', include('rest_auth.registration.urls'))
+    path('auth/register/', include('rest_auth.registration.urls')),
+
+    url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT,}),
 ]

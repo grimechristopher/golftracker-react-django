@@ -1,3 +1,4 @@
+from time import strftime
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -5,6 +6,8 @@ from django.db.models.deletion import CASCADE # To set minimum and maximum integ
 from colorfield.fields import ColorField
 from django.conf import settings
 from datetime import datetime, time, date
+from django.db import transaction
+import os
 
 # Hardcoded list of possible Tee colors to choose from. Currently used to set the options for the tee select fields
 # Planned to change the way the select list chooses tee colors
@@ -127,3 +130,27 @@ class CourseRating(models.Model):
     def save(self, *args, **kwargs):
         super(CourseRating, self).save(*args, **kwargs)
         self.course.update_rating()
+
+class CoursePicture(models.Model):
+    image = models.ImageField(upload_to='images/')
+    course = models.ForeignKey('Course', on_delete=models.CASCADE, null=False, related_name='course_image')
+    uploaded_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name='course_image')
+    is_featured = models.BooleanField()
+
+# Not working / technically not necessary becasue django will append files named the same automatically
+# I will come back to this
+    def update_filename(self, filename):
+        #ext = filename.split('.')[-1]
+        path = 'media/images/'
+        date = datetime.utcnow()
+        date = strftime("%Y%m%d%H%M%S%f")
+        filename = "%s_%s_%s.%s" % (self.uploaded_by.id, self.course.id, date, self.file_extension)
+        return os.path.join(path, filename)
+
+    # This should tell the database to change the other featured image for the Course to false and this one to true
+    def save(self, *args, **kwargs):
+        if not self.is_featured:
+            return super(CoursePicture, self).save(*args, **kwargs)
+        with transaction.atomic():
+            CoursePicture.objects.filter(course=self.course).filter(is_featured=True).update(is_featured=False) # Limit check to pictures of same course
+            return super(CoursePicture, self).save(*args, **kwargs)

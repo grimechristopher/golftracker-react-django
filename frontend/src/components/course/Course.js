@@ -6,6 +6,7 @@ import ApiService from "../../services/ApiService";
 import HolesList from "./HolesList";
 import CourseForm from "./CourseForm";
 import CourseRating from "./CourseRating";
+import CourseImageGallery from "./CourseImageGallery";
 
 
 const Course = (props) => {
@@ -87,18 +88,11 @@ const Course = (props) => {
     
     useEffect(() => {
         retrieveCourse(props.match.params.id);
+        console.log(course);
     }, [])  
     useEffect(() => {
         //retrieveRating();
     }, [course])  
-
-    //useEffect(() => {
-        //console.log("User Rating:");
-        //console.log(userRating);
-        //userRating.filter( uR => { return uR.course.id === course.id });
-        //userRating.Array.filter( rating => rating.course.id === course.id)
-        //console.log(userRating);
-    //}, [userRating])  
 
     return (
         <div>
@@ -110,6 +104,11 @@ const Course = (props) => {
                         <h2>{course.name}</h2>
                         <h3>{course.city}, {course.state}</h3>
                     </div>
+
+                    <CourseImageGallery
+                        images={course.course_image}
+                    />
+
                     <CourseRating
                         //userRating={userRating}
                         course={course}

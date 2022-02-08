@@ -29,3 +29,17 @@
     position: absolute;
     margin-left: 100%;
 }
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+.courseListContainer {
+    display: flex;
+}
+
+.courseListImageContainer {
+    max-width: 15em;
+    min-width: 15em;
+}

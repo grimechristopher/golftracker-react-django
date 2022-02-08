@@ -3,8 +3,8 @@ from rest_framework import viewsets, permissions, filters
 
 from rest_framework.pagination import PageNumberPagination
 
-from .models import GolferUser, Course, Hole, Tee, TeeColor, Round, Score, CourseRating
-from .serializers import GolferUserSerializer, CourseSerializer, CourseDetailSerializer, HolesSerializer, TeesSerializer, TeeColorsSerializer, RoundsListSerializer, RoundDetailSerializer, ScoreSerializer, CourseRatingListSerializer
+from .models import GolferUser, Course, Hole, Tee, TeeColor, Round, Score, CourseRating, CoursePicture
+from .serializers import GolferUserSerializer, CourseSerializer, CourseDetailSerializer, HolesSerializer, TeesSerializer, TeeColorsSerializer, RoundsListSerializer, RoundDetailSerializer, ScoreSerializer, CourseRatingListSerializer, CoursePictureListSerializer 
 
 # Create your views here.
 class GolferUserViewSet(viewsets.ModelViewSet):
@@ -98,10 +98,18 @@ class ScoreViewSet(viewsets.ModelViewSet):
 class CourseRatingViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     #filter_backends = (filters.SearchFilter,) # possibly not the way I should get all ratings related to single course
-    search_fields = ['id',]
+    #search_fields = ['id',]
 
     serializer_class = CourseRatingListSerializer 
     #queryset = CourseRating.objects.all() 
     def get_queryset(self):
         if (self.request.user.is_active):
             return CourseRating.objects.select_related().filter(rated_by=self.request.user)
+
+class CoursePictureViewSet(viewsets.ModelViewSet):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    #filter_backends = (filters.SearchFilter,) # possibly not the way I should get all ratings related to single course
+    #search_fields = ['id',]
+
+    serializer_class = CoursePictureListSerializer 
+    queryset = CoursePicture.objects.all() 
