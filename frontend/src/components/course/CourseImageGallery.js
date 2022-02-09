@@ -42,41 +42,42 @@ const CourseImageGallery = (props) => {
             })
             .catch(err => console.log(err))
             console.log("Uploaded Image: " + img);
-        };
+    };
 
-        const deleteCoursePicture = (imageId) => {
-            if (!localStorage.getItem('token') ) {
-                alert("Deletion of this particular course been disabled for this demonstration.")
-            }
-            else {
-                ApiService.remove('coursepictures', imageId, localStorage.getItem('token'))
-                .then(response => {
-                    //history.push('/courses');
-                    console.log(response);
-                    props.handleChangeProps();
-                })
-                .catch(e => {
-                    console.log(e.response.data);
-                });
-            }
+    const deleteCoursePicture = (imageId) => {
+        if (!localStorage.getItem('token') ) {
+            alert("Deletion of this particular course been disabled for this demonstration.")
         }
+        else {
+            ApiService.remove('coursepictures', imageId, localStorage.getItem('token'))
+            .then(response => {
+                //history.push('/courses');
+                console.log(response);
+                props.handleChangeProps();
+            })
+            .catch(e => {
+                console.log(e.response.data);
+            });
+        }
+    }
 
         const [userId, setUserId] = useState('');
+        const [loggedIn, setLoggedIn] = useState(false);
     
-        useEffect(() => {
-            if (localStorage.getItem('token') !== null) {
-                //setLoggedIn(true);
-                
-                // Easy way to see if user is the uploader. Also is checked on the backend
-                AuthService.user(localStorage.getItem('token'))
-                .then(response => {
-                    //console.log(response.data);
-                    setUserId(response.data.id);
-                    //setUserGender(response.data.gender);
-                })
-    
-            }
-        }, []);
+    useEffect(() => {
+        if (localStorage.getItem('token') !== null) {
+            setLoggedIn(true);
+            
+            // Easy way to see if user is the uploader. Also is checked on the backend
+            AuthService.user(localStorage.getItem('token'))
+            .then(response => {
+                //console.log(response.data);
+                setUserId(response.data.id);
+                //setUserGender(response.data.gender);
+            })
+
+        }
+    }, []);
 
     return (
         <div className={styles.coursePictureGallery} >
@@ -91,14 +92,17 @@ const CourseImageGallery = (props) => {
                 </div>
             ))
             }
-            <div className={styles.coursePictureContainer}  >
-                <h2> + Picture</h2>
-                <CourseImageForm
-                    //course={props.course}
-                    addCoursePictureProps={addCourseImage}
-                    //onSubmit={props.onSubmit}
-                />
-            </div>
+            { loggedIn &&
+                <div className={styles.coursePictureContainer}  >
+                    <h2> + Picture</h2>
+                    <CourseImageForm
+                        //course={props.course}
+                        addCoursePictureProps={addCourseImage}
+                        //onSubmit={props.onSubmit}
+                    />
+                </div>
+            }
+
         </div>
     );
 };

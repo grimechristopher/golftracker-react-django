@@ -8,6 +8,7 @@ const SignupForm = () => {
     const [email, setEmail] = useState('');
     const [password1, setPassword1] = useState('');
     const [password2, setPassword2] = useState('');
+    const [gender, setGender] = useState('MALE'); // Male is the default selected value
     const [errors, setErrors] = useState(false);
     const [loading, setLoading] = useState(true);
 
@@ -28,7 +29,8 @@ const SignupForm = () => {
             username: username,
             email: email,
             password1: password1,
-            password2: password2
+            password2: password2,
+            gender: gender,
         };
 
         AuthService.register(user)
@@ -97,6 +99,22 @@ const SignupForm = () => {
                         onChange={e => setPassword2(e.target.value)}
                         required
                     />
+                    <div>
+                    <label htmlFor='gender'>Gender:</label> <br />
+                        <select 
+                            name="gender"
+                            value={gender}
+                            onChange={e => {console.log(e.target.value); setGender(e.target.value) } } 
+                        >
+                                <option value="MALE" >
+                                    Male
+                                </option>
+                                <option value="FEMALE" >
+                                    Female
+                                </option>
+                        </select>
+                    </div>
+
                 </div>
                 <div>
                     <input type='submit' value='Signup' />

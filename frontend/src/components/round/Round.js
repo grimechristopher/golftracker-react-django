@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ApiService from "../../services/ApiService";
+import AuthService from '../../services/AuthService';
 
 import HolesList from "../course/HolesList";
 
@@ -107,25 +108,26 @@ const Round = (props) => {
                 for (let i in round.scores) {
                     t += round.scores[i].strokes;
                 }
-                setStats({
-                    ...stats,
-                    par: temp,
-                    totalScore: t
-                })
                 console.log(t);
             }   
         }
         if (round.course) {
             for (let i in round.course.holes) {
-                temp += round.course.holes[i].mens_par;
-            }
-            setStats({
-                ...stats,
-                par: temp,
-                totalScore: t
-            })
+                if (userGender == "FEMALE") {
+                    temp += round.course.holes[i].womens_par;
+                }
+                else {
+                    temp += round.course.holes[i].mens_par;
+                }
+            } 
             console.log(temp);
         }
+
+        setStats({
+            ...stats,
+            par: temp,
+            totalScore: t
+        })
 
         if (round.created_on) {
             let utcDate = round.created_on;
@@ -136,6 +138,24 @@ const Round = (props) => {
         }
 
     }, [round])
+
+    const [userGender, setUserGender] = useState('');
+    const [loggedIn, setLoggedIn] = useState(false);
+
+    useEffect(() => {
+        if (localStorage.getItem('token') !== null) {
+            setLoggedIn(true);
+            
+            // Easy way to see if user is the uploader. Also is checked on the backend
+            AuthService.user(localStorage.getItem('token'))
+            .then(response => {
+                //console.log(response.data);
+                setUserGender(response.data.gender);
+                //setUserGender(response.data.gender);
+            })
+
+        }
+    }, []);
 
 
     return (
@@ -191,6 +211,18 @@ const Round = (props) => {
                     complete && round.scores.length > 0 &&
                     <>
                     <h3>Yeah! You finished a round!</h3>
+                    {
+                         (stats.totalScore - stats.par) < 0 &&
+                        <p>You finished {stats.par - stats.totalScore} under par!</p>
+                    }
+                    {
+                         (stats.totalScore - stats.par) > 0 &&
+                        <p>You finished {stats.totalScore - stats.par} over par.</p>
+                    }
+                    {
+                         (stats.totalScore - stats.par) == 0 &&
+                        <p>You finished even par!</p>
+                    }
                     </>
                 }
                 {

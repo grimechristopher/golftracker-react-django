@@ -107,6 +107,10 @@ const CourseRating = (props) => {
             userRating.length > 0 &&
             <Link onClick={handleEditing} to='#'>Your Rating: {userRating[0].rating}</Link>
         }
+        {
+            userRating.length == 0 &&
+            <Link onClick={handleEditing} to='#'>Rate this course</Link>
+        }
         { editing && localStorage.getItem('token') != null &&
             <CourseRatingForm
                 courseId={props.course.id}
