@@ -76,6 +76,37 @@ const HoleForm = (props) => {
 
     return (
         <form onSubmit={handleSubmit} className="form-container">
+
+            { props.userGender ?
+                    <div className={styles.holecell}>
+                        {
+                            props.userGender === 'FEMALE' ?
+                            <div className={styles.holecell}>
+                            <input
+                                type="text"
+                                className={styles.holeinput}
+                                placeholder="Women's Par"
+                                value={hole.womens_par}
+                                name="womens_par"
+                                onChange={onChange}
+                            />
+                        </div>
+                            :
+                            <div className={styles.holecell}>
+                            <input
+                                type="text"
+                                className={styles.holeinput}
+                                placeholder="Men's Par"
+                                value={hole.mens_par}
+                                name="mens_par"
+                                onChange={onChange}
+                                autoFocus
+                            />
+                        </div>
+                        }
+                    </div>
+                :
+                <>
             <div className={styles.holecell}>
                 <input
                     type="text"
@@ -97,6 +128,8 @@ const HoleForm = (props) => {
                     onChange={onChange}
                 />
             </div>
+                </>
+                }
 
         <button className="input-submit" className={styles.cellSubmit}>
             Submit

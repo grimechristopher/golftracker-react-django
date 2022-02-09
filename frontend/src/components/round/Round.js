@@ -204,6 +204,7 @@ const Round = (props) => {
                         holes={round.course.holes} 
                         tee_colors={round.tee_color}
                         handleChangeProps={handleChange} 
+                        userGender={userGender}
                     />
                 </div>
 

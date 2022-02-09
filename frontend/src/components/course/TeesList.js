@@ -50,6 +50,13 @@ const TeesList = (props) => {
             console.log("round prop found");
             setEnabledColors([props.round.tee_color,]);
         }
+    }, [props.round])  
+
+    useEffect(() => {
+        if (props.round) {
+            console.log("round prop found");
+            setEnabledColors([props.round.tee_color,]);
+        }
         else {
             setEnabledColors(props.course.tee_colors);
         }

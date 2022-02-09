@@ -22,6 +22,7 @@ const TeeForm = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        setIsValid(true);
 
         if (props.tees) {
             if (props.tees.length > 0) {
@@ -63,9 +64,9 @@ const TeeForm = (props) => {
                 ...tee,
                 yards: ""
             })
-        }
 
-        props.handleSubmit();
+            props.handleSubmit();
+        }
 
     }
 
@@ -117,10 +118,10 @@ const TeeForm = (props) => {
                 //className="input-number"
                 className={styles.holeinput}
                 placeholder="yards"
-                defaultValue={tee.yards}
+                value={tee.yards}
                 name="yards"
                 onChange={onChange}
-                onBlur={handleSubmit}
+                //onBlur={handleSubmit}
             />
             <button type="submit" className={styles.cellSubmit} >Submit Tee</button>
         </form>

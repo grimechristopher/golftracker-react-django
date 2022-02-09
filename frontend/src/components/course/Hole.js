@@ -86,12 +86,26 @@ const Hole = (props) => {
          
             { !editing && 
             <>
+                { props.round ?
+                    <div className={styles.holecell}>
+                        {
+                            props.userGender === 'FEMALE' ?
+                            <h4 onClick={handleEditing}>{props.hole.womens_par}</h4>
+                            :
+                            <h4 onClick={handleEditing}>{props.hole.mens_par}</h4>
+                        }
+                    </div>
+                :
+                <>
                 <div className={styles.holecell}>
                     <h4 onClick={handleEditing}>{props.hole.mens_par}</h4>
                 </div>
                 <div className={styles.holecell}>
                     <h4 onClick={handleEditing}>{props.hole.womens_par}</h4>
                 </div>
+                </>
+                }
+
             </>
             }
             { editing &&
@@ -102,6 +116,7 @@ const Hole = (props) => {
                 addHoleProps={updateHole} 
                 handleChangeProps={props.handleChangeProps} 
                 handleSubmit={handleEditing}
+                userGender={props.userGender}
             />
             </>
             }

@@ -132,12 +132,26 @@ const HolesList = (props) => {
                 </div>
                 }
 
+                { props.round ?
+                    <div className={styles.holecell}>
+                        {
+                            props.userGender === 'FEMALE' ?
+                            <h4>Ladies</h4>
+                            :
+                            <h4>Mens</h4>
+                        }
+                    </div>
+                :
+                <>
                 <div className={styles.holecell}>
                     <h4>Mens</h4>
                 </div>
                 <div className={styles.holecell}>
                     <h4>Ladies</h4>
                 </div>
+                </>
+
+                }
             </div>
             {props.course.holes &&
             props.course.holes.map((hole, index) => (
@@ -148,6 +162,7 @@ const HolesList = (props) => {
                 round={props.round}
                 handleChangeProps={props.handleChangeProps}
                 enabledColors={props.enabledColors}
+                userGender={props.userGender}
             />
             ))}
   
@@ -173,13 +188,27 @@ const HolesList = (props) => {
                     </div>
                 </>
                 }
-
+                
+                { props.round ?
+                    <div className={styles.holecell}>
+                        {
+                            props.userGender === 'FEMALE' ?
+                            <h3>{stats.womensPar}</h3>
+                            :
+                            <h3>{stats.mensPar}</h3>
+                        }
+                    </div>
+                :
+                <>
                 <div className={styles.holecell}>
                     <h3>{stats.mensPar}</h3>
                 </div>
                 <div className={styles.holecell}>
                     <h3>{stats.womensPar}</h3>
                 </div>
+                </>
+
+                }
             </div>
 
 
