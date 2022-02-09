@@ -44,13 +44,18 @@ const Course = (props) => {
     }
 
     const deleteCourse = () => {
-        ApiService.remove('courses', course.id, localStorage.getItem('token'))
+        if (course.id <= 5) {
+            alert("Deletion of this particular course been disabled for this demonstration.")
+        }
+        else {
+            ApiService.remove('courses', course.id, localStorage.getItem('token'))
             .then(response => {
                 history.push('/courses');
             })
             .catch(e => {
                 console.log(e.response.data);
             });
+        }
     }
 
     const updateCourse = (title, city, state, colors) => {
@@ -106,7 +111,10 @@ const Course = (props) => {
                     </div>
 
                     <CourseImageGallery
-                        images={course.course_image}
+                        course={course}
+                        //images={course.course_image}
+                        //onSubmit={props.handleChange}
+                        handleChangeProps={handleChange}
                     />
 
                     <CourseRating

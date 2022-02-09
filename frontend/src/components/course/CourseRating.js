@@ -28,6 +28,7 @@ const CourseRating = (props) => {
     };
 
     const handleRatingChange = (rating) => {
+        handleEditing();
         console.log("Handle Rating Chane");
         if (userRating.length == 0) {
             console.log("Rating is being added");

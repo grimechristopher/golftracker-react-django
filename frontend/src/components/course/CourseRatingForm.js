@@ -25,7 +25,6 @@ const CourseRatingForm = (props) => {
 
         //props.handleChangeProps();
         props.handleSubmit(courseRating.rating);
-    
     }
 
     return (

@@ -14,6 +14,9 @@ class GolferUserSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['id', 'url', 'username', 'email', 'gender']
 
 class CoursePictureListSerializer(serializers.ModelSerializer):
+    # Required to set the active user to uploaded_by field
+    uploaded_by = serializers.PrimaryKeyRelatedField(queryset=GolferUser.objects.all(), default=serializers.CurrentUserDefault())
+
     class Meta:
         model = CoursePicture
         fields = ('id', 'uploaded_by', 'image', 'course', 'is_featured' )
@@ -26,7 +29,7 @@ class FeaturedCoursePictureListSerializer(serializers.ModelSerializer):
 
 class CourseSerializer(serializers.ModelSerializer):
     #course_image = FeaturedCoursePictureListSerializer(many=True,) 
-    course_image = CoursePictureListSerializer(many=True,) 
+    course_image = CoursePictureListSerializer(many=True, required=False, read_only=True ) 
     # I really want to only expose the single course_image for this course with is_featured == True
     # Need to work on that
 
@@ -86,7 +89,7 @@ class HoleDetailSerializer(serializers.ModelSerializer):
 class CourseDetailSerializer(serializers.ModelSerializer):
     holes = HoleDetailSerializer(many=True,)
     tee_colors = TeeColorsSerializer(many=True,)
-    course_image = CoursePictureListSerializer(many=True,) 
+    course_image = CoursePictureListSerializer(many=True,)
 
     class Meta:
         model = Course

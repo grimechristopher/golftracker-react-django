@@ -113,3 +113,7 @@ class CoursePictureViewSet(viewsets.ModelViewSet):
 
     serializer_class = CoursePictureListSerializer 
     queryset = CoursePicture.objects.all() 
+
+    def perform_destroy(self, instance):
+        if (instance.uploaded_by == self.request.user):
+            instance.delete()

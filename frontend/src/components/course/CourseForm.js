@@ -51,26 +51,26 @@ const CourseForm = (props) => {
 
         let isValidated = true;
 
-        if (course.title.trim()) {
+        if (course.title) {
           setCourse({
-            title: "",
+            //title: "",
           })
         } else {
           alert("Name cannot be blank.");
           isValidated = false;
         }
 
-        if (course.city.trim()) {
+        if (course.city) {
             setCourse({
-              city: "",
+              //city: "",
             })
         } else {
             alert("City cannot be blank.");
         }
 
-        if (course.state.trim()) {
+        if (course.state) {
             setCourse({
-              state: "",
+              //state: "",
             })
         } else {
             alert("State cannot be blank.");
@@ -79,9 +79,8 @@ const CourseForm = (props) => {
 
         if (isValidated) {
             props.addCourseProps(course.title, course.city, course.state, course.tee_colors);
-            props.onSubmit()
         }
-
+        props.onSubmit()
     }
     
     useEffect(() => {
