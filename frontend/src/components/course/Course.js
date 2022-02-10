@@ -95,6 +95,7 @@ const Course = (props) => {
         retrieveCourse(props.match.params.id);
         console.log(course);
     }, [])  
+
     useEffect(() => {
         //retrieveRating();
     }, [course])  

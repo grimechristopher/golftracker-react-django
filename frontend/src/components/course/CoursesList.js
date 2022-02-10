@@ -2,12 +2,23 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom"
 import ApiService from "../../services/ApiService";
 import axios from 'axios';
+//import raw from '../../../../debugswitch.txt';
 
 import CourseForm from './CourseForm';
 
 import CourseListItem from "./CourseListItem";
 
 const CoursesList = (props) => {
+
+    const coursesLink = "http://localhost:8000/api/courses/"
+    fetch('../../../../debugswitch.txt')
+        .then(r => r.text())
+        .then(text => {
+          console.log('text decoded:', text);
+          if (text == "False") {
+            coursesLink = "https://golf-api.chrisgrime.com/api/courses/"
+          }
+        });
 
     const [courses, setCourses] = useState([]);
     //const [filteredCourses, setFilteredCourses] = useState([]);
@@ -45,7 +56,7 @@ const CoursesList = (props) => {
       
         ApiService.create('courses', data, localStorage.getItem('token'))
             .then(response => {
-                retrieveCourses("http://localhost:8000/api/courses/");
+                retrieveCourses( coursesLink);
             })
             .catch(e => {
                 console.log(e.response.data);
@@ -53,7 +64,7 @@ const CoursesList = (props) => {
     }
 
     const onSubmit = () => {
-        retrieveCourses("http://localhost:8000/api/courses/");
+        retrieveCourses( coursesLink);
         setAddingCourse(!addingCourse);
     }
 
@@ -67,12 +78,12 @@ const CoursesList = (props) => {
         //                                   || course.state.toLowerCase().includes(query) );
         //setFilteredCourses(result);
         // Uses the django backend search
-        retrieveCourses("http://localhost:8000/api/courses/?search="+ query);
+        retrieveCourses( coursesLink + '?search=' + query);
         
     }
 
     useEffect(() => {
-        retrieveCourses("http://localhost:8000/api/courses/");
+        retrieveCourses( coursesLink);
     }, [])
 
     return (

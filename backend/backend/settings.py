@@ -20,14 +20,20 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '8^zaf(5d0@_9ymmw#0pqhiwvy&x9@0gb7e+e^zd$gfrfgzun4g'
+# SECRET_KEY 
+with open( os.path.join(BASE_DIR,  '../grimegolfsecretkey.txt') ) as file:
+    SECRET_KEY = file.read().strip()
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
+with open( os.path.join(BASE_DIR,  '../debugswitch.txt') ) as file:
+    if (file.read().strip() == 'True'):
+        DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['golf-react.chrisgrime.com', 'golf-api.chrisgrime.com', 'localhost']
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# MEDIA_ROOT = '/home/ii0m01jjky16/public_html/golf-api.chrisgrime.com/media'
 MEDIA_URL = '/media/' 
 
 # Application definition
@@ -92,10 +98,15 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+DB_PATH = os.path.join(BASE_DIR, 'db.sqlite3')
+
+if (DEBUG == False):
+    DB_PATH = os.path.join(BASE_DIR, 'db_live.sqlite3')
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': DB_PATH,
     }
 }
 
@@ -137,13 +148,18 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 AUTH_USER_MODEL = 'golfapp.GolferUser'
 
 CORS_ORIGIN_ALLOW_ALL = False
-CORS_ORIGIN_WHITELIST = (
+CORS_ALLOWED_ORIGINS = (
     'http://localhost:3000',
+    'https://golf-react.chrisgrime.com',
 )
+CSRF_TRUSTED_ORIGINS = [
+    "https://golf-react.chrisgrime.com",
+]
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 

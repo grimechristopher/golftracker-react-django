@@ -23,12 +23,11 @@ const RoundsList = () => {
 
     const addRound = (title, course, tee_color) => {
         let now = new Date();
-        now.toISOString();
 
         let data = {
             name: title,
             course: course,
-            created_on: now,
+            created_on: now.toISOString(),
         };
       
         console.log(data);

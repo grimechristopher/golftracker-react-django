@@ -1,6 +1,17 @@
 import axios from 'axios';
 
-const AUTH_BASE_URL = "http://localhost:8000/auth/";
+
+let AUTH_BASE_URL = "http://localhost:8000/auth/";
+fetch('../../../debugswitch.txt')
+    .then(r => r.text())
+    .then(text => {
+      console.log('text decoded:', text);
+      if (text == "False") {
+        AUTH_BASE_URL = "https://golf-api.chrisgrime.com/auth/";
+      }
+});
+//const AUTH_BASE_URL = "http://localhost:8000/auth/";
+//const AUTH_BASE_URL = "https://golf-api.chrisgrime.com/auth/";
 
 const login = (data) => {
     return axios.post(AUTH_BASE_URL + 'login/', data);

@@ -83,7 +83,7 @@ const RoundForm = (props) => {
             [e.target.name]: e.target.selectedValue,
           })
           console.log(e.target.selectedValue);
-      }
+    }
 
     useEffect(() => {
 
@@ -99,7 +99,7 @@ const RoundForm = (props) => {
         retrieveCourses();
         retrieveTeeColors();
   
-      }, [])
+    }, [])
 
     return (
         <form onSubmit={handleSubmit} className="form-container">

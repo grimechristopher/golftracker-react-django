@@ -4,6 +4,7 @@ import { Route, Switch } from "react-router-dom";
 import Header from "./Header"
 import Navbar from "./Navbar";
 import Home from "./Home";
+import Footer from "./Footer";
 
 import CoursesList from './course/CoursesList';
 import Course from './course/Course';
@@ -28,6 +29,7 @@ const GolfappContainer = () => {
                 <Route exact path='/signup' component={SignupForm} />
                 <Route exact path='/logout' component={Logout} />
             </Switch>
+            <Footer />
 
         </>
     );

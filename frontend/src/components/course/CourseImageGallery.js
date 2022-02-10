@@ -29,7 +29,19 @@ const CourseImageGallery = (props) => {
         form_data.append('image', data.image, data.image.name);
         form_data.append('course', data.course);
         //form_data.append('content', this.state.content);
+
         let url = 'http://localhost:8000/api/coursepictures/';
+        fetch('../../../debugswitch.txt')
+            .then(r => r.text())
+            .then(text => {
+              console.log('text decoded:', text);
+              if (text == "False") {
+                url = 'https://golf-api.chrisgrime.com/api/coursepictures/';
+              }
+        });
+
+        //let url = 'http://localhost:8000/api/coursepictures/';
+        //let url = 'https://golf-api.chrisgrime.com/api/coursepictures/';
         axios.post(url, form_data, {
           headers: {
             'content-type': 'multipart/form-data',
