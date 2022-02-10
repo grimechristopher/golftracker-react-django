@@ -9,7 +9,8 @@
 /coverage
 
 # production
-/build
+# Sync build so i can auto display changes on demo site
+#/build
 
 # misc
 .DS_Store
