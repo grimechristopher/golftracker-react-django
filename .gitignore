@@ -9,7 +9,7 @@
 /coverage
 
 # production
-/build
+# Allow /build so I can auto sync production files.
 
 # misc
 .DS_Store
