@@ -7,7 +7,7 @@ const Footer = () => {
             <ul>
                 <li><a href="https://github.com/grimechristopher/golftracker-react-django">View code on Github</a></li>
                 <li><a href="https://chrisgrime.com">chrisgrime.com</a></li>
-                <li>Updated 2022-2-9</li>
+                <li>Updated 2022-2-10</li>
             </ul>
         </div>
     );
