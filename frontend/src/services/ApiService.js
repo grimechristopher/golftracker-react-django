@@ -3,14 +3,10 @@ import axios from 'axios';
 
 
 let API_BASE_URL = "https://golf-api.chrisgrime.com/api/";
-fetch('../../../debugswitch.txt')
-    .then(r => r.text())
-    .then(text => {
-      console.log('text decoded:', text);
-      if (text === "True") {
-        API_BASE_URL = "http://localhost:8000/api/";
-      }
-});
+if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+    API_BASE_URL = "http://localhost:8000/api/";
+}
+
 //const API_BASE_URL = "http://localhost:8000/api/";
 //const API_BASE_URL = "https://golf-api.chrisgrime.com/api/";
 
