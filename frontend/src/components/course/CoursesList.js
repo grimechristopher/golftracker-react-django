@@ -10,15 +10,18 @@ import CourseListItem from "./CourseListItem";
 
 const CoursesList = (props) => {
 
-    const coursesLink = "http://localhost:8000/api/courses/"
-    fetch('../../../../debugswitch.txt')
+    const coursesLink = "https://golf-api.chrisgrime.com/api/courses/"
+    try {
+        fetch('../../../../debugswitch.txt')
         .then(r => r.text())
         .then(text => {
           console.log('text decoded:', text);
-          if (text == "False") {
-            coursesLink = "https://golf-api.chrisgrime.com/api/courses/"
+          if (text == "True") {
+            coursesLink = "http://localhost:8000/api/courses/"
           }
         });
+    }finally{}
+
 
     const [courses, setCourses] = useState([]);
     //const [filteredCourses, setFilteredCourses] = useState([]);
