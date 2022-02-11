@@ -1,0 +1,5 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/ii0m01jjky16/public_html/golf-react.chrisgrime.com/
+    - /bin/cp -R /home/ii0m01jjky16/repositories/golftracker-react-django/frontend/build $DEPLOYPATH
