@@ -15,8 +15,8 @@ const CoursesList = (props) => {
         fetch('../../../../debugswitch.txt')
         .then(r => r.text())
         .then(text => {
-          console.log('text decoded:', text);
-          if (text == "True") {
+          //console.log('text decoded:', text);
+          if (text === "True") {
             coursesLink = "http://localhost:8000/api/courses/"
           }
         });

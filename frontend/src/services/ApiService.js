@@ -2,13 +2,13 @@ import axios from 'axios';
 //import raw from '../../../debugswitch.txt';
 
 
-let API_BASE_URL = "http://localhost:8000/api/";
+let API_BASE_URL = "https://golf-api.chrisgrime.com/api/";
 fetch('../../../debugswitch.txt')
     .then(r => r.text())
     .then(text => {
       console.log('text decoded:', text);
-      if (text == "False") {
-        API_BASE_URL = "https://golf-api.chrisgrime.com/api/";
+      if (text === "True") {
+        API_BASE_URL = "http://localhost:8000/api/";
       }
 });
 //const API_BASE_URL = "http://localhost:8000/api/";

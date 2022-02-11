@@ -1,13 +1,13 @@
 import axios from 'axios';
 
 
-let AUTH_BASE_URL = "http://localhost:8000/auth/";
+let AUTH_BASE_URL = "https://golf-api.chrisgrime.com/auth/";
 fetch('../../../debugswitch.txt')
     .then(r => r.text())
     .then(text => {
       console.log('text decoded:', text);
-      if (text == "False") {
-        AUTH_BASE_URL = "https://golf-api.chrisgrime.com/auth/";
+      if (text === "True") {
+        AUTH_BASE_URL = "http://localhost:8000/auth/";
       }
 });
 //const AUTH_BASE_URL = "http://localhost:8000/auth/";
