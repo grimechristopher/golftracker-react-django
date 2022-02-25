@@ -10,7 +10,7 @@ import CourseListItem from "./CourseListItem";
 
 const CoursesList = (props) => {
 
-    const coursesLink = "https://golf-api.chrisgrime.com/api/courses/"
+    let coursesLink = "https://golf-api.chrisgrime.com/api/courses/"
     if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
         coursesLink = "http://localhost:8000/api/courses/"
     }
