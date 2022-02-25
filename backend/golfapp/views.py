@@ -13,6 +13,10 @@ class GolferUserViewSet(viewsets.ModelViewSet):
     queryset = GolferUser.objects.all()
     permission_classes = [permissions.IsAuthenticated]
 
+    def get_queryset(self):
+        if (self.request.user.is_active):
+            return GolferUser.objects.select_related().filter(pk=self.request.user.id)
+
 class CourseListPagination(PageNumberPagination):
     page_size = 10
     page_size_query_param = 'page_size'
